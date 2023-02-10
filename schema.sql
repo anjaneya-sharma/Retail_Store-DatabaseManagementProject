@@ -13,29 +13,25 @@ CREATE TABLE Payment(
 );
 
 CREATE TABLE Places(
-	pl_cus_id INT NOT NULL UNIQUE,
+	pl_cus_id INT NOT NULL,
     pl_order_id INT NOT NULL UNIQUE,
-    pl_cart_id INT NOT NULL UNIQUE,
-    PRIMARY KEY(pl_cus_id, pl_order_id, pl_cart_id)
+    pl_cart_id INT NOT NULL UNIQUE
 );
 
 CREATE TABLE Pays(
 	pys_pt_id INT NOT NULL UNIQUE,
-    pys_cus_id INT NOT NULL UNIQUE,
-    pys_order_id INT NOT NULL UNIQUE,
-    PRIMARY KEY(pys_pt_id, pys_cus_id, pys_order_id)
+    pys_cus_id INT NOT NULL,
+    pys_order_id INT NOT NULL UNIQUE
 );
 
 CREATE TABLE Manages(
 	m_admin_id INT NOT NULL UNIQUE,
-    m_p_id INT NOT NULL UNIQUE,
-    PRIMARY KEY(m_admin_id, m_p_id)
+    m_p_id INT NOT NULL UNIQUE
 );
 
 CREATE TABLE Is_Added_To(
     ias_p_id INT NOT NULL UNIQUE,
-    ias_cart_id INT NOT NULL UNIQUE,
-    PRIMARY KEY(ias_p_id, ias_cart_id)
+    ias_cart_id INT NOT NULL UNIQUE
 );
 
 CREATE TABLE Cart(
@@ -101,9 +97,9 @@ CREATE TABLE Product(
 CREATE TABLE Cart_Product_List(
 	cp_id INT NOT NULL UNIQUE,
     cp_quantity INT,
-    cp_cart_id INT NOT NULL UNIQUE,
+    cp_cart_id INT NOT NULL,
     cp_price INT ,
-    cp_pid INT NOT NULL UNIQUE, 
+    cp_pid INT NOT NULL, 
     PRIMARY KEY(cp_id),
     FOREIGN KEY(cp_pid) REFERENCES Product (p_id),
     FOREIGN KEY(cp_cart_id) REFERENCES CART(cart_id)
@@ -115,7 +111,7 @@ CREATE TABLE _Order (
     order_dp_id INT NOT NULL ,
     order_date  DATE NOT NULL ,
     order_ship_date DATE  NOT NULL ,
-    order_cus_id INT NOT NULL UNIQUE,
+    order_cus_id INT NOT NULL,
     PRIMARY KEY(order_id),
     FOREIGN KEY(order_dp_id) REFERENCES Delivery_Partner(dp_id)
 );
