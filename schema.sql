@@ -57,10 +57,10 @@ CREATE TABLE Seller(
     
 	s_firstname VARCHAR(255) NOT NULL,
 	s_lastname VARCHAR(255) NOT NULL,
-    s_mobile INT NOT NULL,
+    s_mobile BIGINT NOT NULL,
     s_email VARCHAR(255) NOT NULL,
     s_city VARCHAR(255) NOT NULL,
-    s_pin_code VARCHAR(6) NOT NULL,
+    s_pin_code VARCHAR(25),
     
     PRIMARY KEY (s_id)
 );
@@ -72,10 +72,10 @@ CREATE TABLE Delivery_Partner(
 
 	dp_firstname VARCHAR(255) NOT NULL,
 	dp_lastname VARCHAR(255) NOT NULL,
-    dp_mobile INT NOT NULL,
+    dp_mobile BIGINT NOT NULL,
     dp_email VARCHAR(255) NOT NULL,
     dp_city VARCHAR(255) NOT NULL,
-    dp_pin_code VARCHAR(6) NOT NULL,
+    dp_pin_code VARCHAR(25),
 
     PRIMARY KEY (dp_id)
 );
@@ -91,7 +91,7 @@ CREATE TABLE Product(
 	p_id INT NOT NULL UNIQUE,
     p_name VARCHAR(255) NOT NULL,
 	p_cost INT NOT NULL,
-    p_discrip VARCHAR(255),
+    p_descrip VARCHAR(500),
     p_stock INT DEFAULT 0,
     p_cat_id INT NOT NULL,
     PRIMARY KEY (p_id),
@@ -126,11 +126,11 @@ CREATE TABLE Customer(
     
 	cus_firstname VARCHAR(255) NOT NULL,
 	cus_lastname VARCHAR(255) NOT NULL,
-    cus_mobile INT NOT NULL,
+    cus_mobile BIGINT NOT NULL,
     cus_email VARCHAR(255) NOT NULL,
 	cus_street VARCHAR(255) NOT NULL,
     cus_city VARCHAR(255) NOT NULL,
-    cus_pin_code VARCHAR(6) NOT NULL,
+    cus_pin_code VARCHAR(25),
     
     cus_cart_id INT NOT NULL UNIQUE,
     cus_sub_id INT NOT NULL UNIQUE,
