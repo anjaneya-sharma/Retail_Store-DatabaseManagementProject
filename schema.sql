@@ -24,16 +24,6 @@ CREATE TABLE Pays(
     pys_order_id INT NOT NULL UNIQUE
 );
 
-CREATE TABLE Manages(
-	m_admin_id INT NOT NULL UNIQUE,
-    m_p_id INT NOT NULL UNIQUE
-);
-
-CREATE TABLE Is_Added_To(
-    ias_p_id INT NOT NULL UNIQUE,
-    ias_cart_id INT NOT NULL UNIQUE
-);
-
 CREATE TABLE Cart(
 	cart_id INT NOT NULL UNIQUE ,
 	total_price INT DEFAULT 0,
