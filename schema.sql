@@ -3,7 +3,6 @@ CREATE DATABASE Online_Retail_Store;
 USE Online_Retail_Store;
 
 CREATE TABLE Admin(
-	
 	Admin_ID INT NOT NULL UNIQUE,
     Admin_Username VARCHAR(255) NOT NULL,
     Admin_Password VARCHAR(255) NOT NULL,
@@ -63,6 +62,17 @@ CREATE TABLE Category(
     PRIMARY KEY (cat_id)
 );
 
+CREATE TABLE Product(
+	p_id INT NOT NULL UNIQUE,
+    p_name VARCHAR(255) NOT NULL UNIQUE,
+	p_cost INT NOT NULL,
+    p_discrip VARCHAR(255),
+    p_stock INT DEFAULT 0,
+    p_cat_id INT NOT NULL,
+    PRIMARY KEY (p_id),
+    FOREIGN KEY (p_cat_id) REFERENCES Category(cat_id)
+);
+
 CREATE TABLE Cart(
 	cart_id INT NOT NULL UNIQUE ,
 	total_price INT DEFAULT 0,
@@ -74,6 +84,25 @@ CREATE TABLE Cart_Product_List(
     cp_quantity INT ,
     cp_price INT ,
     cp_pid INT NOT NULL UNIQUE,
+    PRIMARY KEY(cp_id),
+    FOREIGN KEY(cp_pid) REFERENCES Product (p_id)
+);
+
+CREATE TABLE _Order (
+	order_id INT NOT NULL UNIQUE,
+    order_delivery_status VARCHAR(255) NOT NULL ,
+    order_dp_id INT NOT NULL ,
+    order_date  INT NOT NULL ,
+    order_ship_date DATE  NOT NULL ,
+    order_cus_id INT NOT NULL  UNIQUE,
+    PRIMARY KEY(order_id),
+    FOREIGN KEY(order_dp_id) REFERENCES Delivery_Partner(dp_id)
+);
+
+CREATE TABLE Payment(
+	pt_id INT NOT NULL UNIQUE,
+    pt_amount INT DEFAULT 0,
+    pt_date_time DATE,
     PRIMARY KEY(cp_id),
     FOREIGN KEY(cp_pid) REFERENCES Product (p_id)
 );
