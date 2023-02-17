@@ -9,7 +9,9 @@ CREATE TABLE Payment(
 	pt_id INT NOT NULL UNIQUE,
     pt_amount INT DEFAULT 0,
     pt_date_time DATE,
-    PRIMARY KEY (pt_id)
+    PRIMARY KEY (pt_id),
+    
+    CONSTRAINT amt CHECK (pt_amount>0)
 );
 
 CREATE TABLE Places(
@@ -27,7 +29,8 @@ CREATE TABLE Pays(
 CREATE TABLE Cart(
 	cart_id INT NOT NULL UNIQUE ,
 	total_price INT DEFAULT 0,
-    PRIMARY KEY(cart_id)
+    PRIMARY KEY(cart_id),
+    CONSTRAINT prc CHECK (total_price>0)
 );
 
 CREATE TABLE Category(
@@ -81,7 +84,10 @@ CREATE TABLE Product(
     p_stock INT DEFAULT 0,
     p_cat_id INT NOT NULL,
     PRIMARY KEY (p_id),
-    FOREIGN KEY (p_cat_id) REFERENCES Category(cat_id)
+    FOREIGN KEY (p_cat_id) REFERENCES Category(cat_id),
+    
+    
+    CONSTRAINT price_check CHECK (p_cost>0 and p_stock>=0)
 );
 
 CREATE TABLE Cart_Product_List(
@@ -92,7 +98,9 @@ CREATE TABLE Cart_Product_List(
     cp_pid INT NOT NULL, 
     PRIMARY KEY(cp_id),
     FOREIGN KEY(cp_pid) REFERENCES Product (p_id),
-    FOREIGN KEY(cp_cart_id) REFERENCES CART(cart_id)
+    FOREIGN KEY(cp_cart_id) REFERENCES CART(cart_id),
+    
+    CONSTRAINT price_check CHECK (p_cost>0 and cp_quantity>0)
 );
 
 CREATE TABLE _Order (
@@ -121,10 +129,18 @@ CREATE TABLE Customer(
     cus_cart_id INT NOT NULL UNIQUE,
     cus_sub_id INT NOT NULL UNIQUE,
     
+    cus_wallet INT NOT NULL ,
+    
     PRIMARY KEY (cus_id),
     FOREIGN KEY (cus_cart_id) REFERENCES Cart(cart_id),
-    FOREIGN KEY (cus_sub_id) REFERENCES Subscription(sub_id) 
+    FOREIGN KEY (cus_sub_id) REFERENCES Subscription(sub_id) ,
+    
+    CONSTRAINT wallet_ballance CHECK(cus_wallet>=0)
 );
+ 
+ 
+-- EXTRAS
+
 CREATE TABLE Manages(
 	m_admin_id INT NOT NULL,
     m_p_id INT NOT NULL 
@@ -133,7 +149,6 @@ CREATE TABLE is_added_to(
 	iat_cart_id INT NOT NULL,
     iat_p_id INT NOT NULL
 );
-
 -- debug
 drop table Admin, _Order,Payment, Places, Manages, Pays, Is_Added_To, Cart_Product_List, Cart, Category, Seller, Delivery_Partner, Product, Subscription, Customer;
 show tables;
