@@ -101,7 +101,7 @@ CREATE TABLE Cart_Product_List(
     FOREIGN KEY(cp_pid) REFERENCES Product (p_id),
     FOREIGN KEY(cp_cart_id) REFERENCES CART(cart_id),
     
-    CONSTRAINT price_check CHECK (p_cost>0 and cp_quantity>0)
+    CONSTRAINT price_check2 CHECK (cp_price>0 and cp_quantity>0)
 );
 
 CREATE TABLE _Order (
