@@ -30,6 +30,7 @@ CREATE TABLE Cart(
 	cart_id INT NOT NULL UNIQUE ,
 	total_price INT DEFAULT 0,
     PRIMARY KEY(cart_id),
+    
     CONSTRAINT prc CHECK (total_price>0)
 );
 
@@ -110,6 +111,16 @@ CREATE TABLE _Order (
     order_date  DATE NOT NULL ,
     order_ship_date DATE  NOT NULL ,
     order_cus_id INT NOT NULL,
+    
+     order_cus_firstname VARCHAR(255) NOT NULL,
+	 order_cus_lastname VARCHAR(255) NOT NULL,
+	 order_cus_mobile BIGINT NOT NULL,
+	 order_cus_email VARCHAR(255) NOT NULL,
+	 order_cus_street VARCHAR(255) NOT NULL,
+	 order_cus_city VARCHAR(255) NOT NULL,
+	 order_cus_pin_code VARCHAR(25),
+    
+    
     PRIMARY KEY(order_id),
     FOREIGN KEY(order_dp_id) REFERENCES Delivery_Partner(dp_id)
 );
