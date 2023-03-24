@@ -53,7 +53,22 @@ public class dbms{
         
         try{
             PreparedStatement st;
-            st              = con.prepareStatement("SELECT * FROM Cart_Product_List WHERE cp_cart_id=?");
+            
+//            SELECT Product.p_id, Product.p_descrip, Product.p_cost, Cart_Product_List.cp_price
+//            FROM Cart_Product_List
+//            LEFT JOIN Product
+//            ON Cart_Product_List.cp_pid=Product.p_id
+//            WHERE Cart_Product_List.cp_cart_id = (SELECT cus_cart_id
+//                                                  FROM Customer
+//                                                  WHERE Customer.cus_id=222)
+                                                  
+            st              = con.prepareStatement("SELECT Product.p_name, Product.p_descrip, Product.p_cost, Cart_Product_List.cp_price " +
+                                                   "FROM Cart_Product_List " +
+                                                   "LEFT JOIN Product " +
+                                                   "ON Cart_Product_List.cp_pid=Product.p_id " +
+                                                   "WHERE Cart_Product_List.cp_cart_id = (SELECT cus_cart_id " +
+                                                   "                                      FROM Customer " +
+                                                   "                                      WHERE Customer.cus_id=?)");
             
             Scanner sc      = new Scanner(System.in);
             int query       = sc.nextInt();
@@ -63,11 +78,11 @@ public class dbms{
             ResultSet rs    = st.executeQuery();
             
             while (rs.next()){
-                System.out.println(String.format("Product ID = %d , Product Quantity = %d , Total Price = %d",
-                                    rs.getInt("cp_pid"),
-                                    rs.getInt("cp_quantity"),
-                                    rs.getInt("cp_price")
-                                    
+                System.out.println(String.format("Product Name = %s \nProduct Description = %s \nProduct Cost = %d \nTotal Price = %d \n\n",
+                                    rs.getString("Product.p_name"),
+                                    rs.getString("Product.p_descrip"),
+                                    rs.getInt("Product.p_cost"),
+                                    rs.getInt("Cart_Product_List.cp_price")                 
                 ));
             }
             
