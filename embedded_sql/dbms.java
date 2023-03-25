@@ -26,10 +26,6 @@
 //        
 //    }
 //}
-
-
-package dbms;
-
 import java.sql.*;
 import java.util.*;
 
@@ -42,8 +38,6 @@ public class dbms{
             String url      = "jdbc:mysql://localhost:3306/Online_Retail_Store";
             String uname    = "root";
             String pass     = "root";
-
-//          Class.forName("com.mysql.cj.jdbc.Driver");
 
             con  = DriverManager.getConnection(url, uname, pass);
         }catch(Exception e){
@@ -60,7 +54,7 @@ public class dbms{
 //            ON Cart_Product_List.cp_pid=Product.p_id
 //            WHERE Cart_Product_List.cp_cart_id = (SELECT cus_cart_id
 //                                                  FROM Customer
-//                                                  WHERE Customer.cus_id=222)
+//                                                  WHERE Customer.cus_id=?)
                                                   
             st              = con.prepareStatement("SELECT Product.p_name, Product.p_descrip, Product.p_cost, Cart_Product_List.cp_price " +
                                                    "FROM Cart_Product_List " +
@@ -78,14 +72,13 @@ public class dbms{
             ResultSet rs    = st.executeQuery();
             
             while (rs.next()){
-                System.out.println(String.format("Product Name = %s \nProduct Description = %s \nProduct Cost = %d \nTotal Price = %d \n\n",
+                System.out.println(String.format("Product Name        : %s \nProduct Description : %s \nProduct Cost        : %d \nTotal Price         : %d \n\n",
                                     rs.getString("Product.p_name"),
                                     rs.getString("Product.p_descrip"),
                                     rs.getInt("Product.p_cost"),
                                     rs.getInt("Cart_Product_List.cp_price")                 
                 ));
             }
-            
         }catch(Exception e){
             System.out.println("Encountered Error while preparing statement : "+e);
         }

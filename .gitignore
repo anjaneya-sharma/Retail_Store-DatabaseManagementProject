@@ -1,2 +1,4 @@
 .DS_Store
+./embedded_sql/.idea/
+./embedded_sql/out/
 
