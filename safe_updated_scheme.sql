@@ -161,12 +161,12 @@ end if; //
  
  
 -- salary basic 
-delimiter //
+delimiter $$
 CREATE TRIGGER basic_salary
 BEFORE INSERT ON Delivery_Partner
 for each row 
 set new.dp_salary=10000;
-end if; //
+end if; $$
 
 
 drop trigger basic_salary;
