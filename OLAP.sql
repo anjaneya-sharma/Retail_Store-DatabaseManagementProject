@@ -104,6 +104,7 @@ FROM Category
 JOIN Product ON Category.cat_id = Product.p_cat_id
 JOIN Cart_Product_List ON Product.p_id = Cart_Product_List.cp_pid
 GROUP BY Category.cat_name
+ORDER BY total_in_cart DESC
 LIMIT 10;
 
 -- Trending Products
@@ -112,8 +113,7 @@ SELECT p.p_name, COUNT(DISTINCT cpl.cp_cart_id) as cart_count
 FROM Product p
 JOIN Cart_Product_List cpl ON p.p_id = cpl.cp_pid
 GROUP BY p.p_id
-ORDER BY cart_count DESC
-LIMIT 10;
+ORDER BY cart_count DESC;
 
 -- Get the total sales revenue for each category:
 
@@ -121,7 +121,8 @@ SELECT c.cat_name, SUM(cp.cp_price * cp.cp_quantity) AS total_revenue
 FROM Category c
 JOIN Product p ON c.cat_id = p.p_cat_id
 JOIN Cart_Product_List cp ON p.p_id = cp.cp_pid
-GROUP BY c.cat_name;
+GROUP BY c.cat_name
+ORDER BY total_revenue DESC;
 
 -- top 10 delivery partner with the most number of orders
 
@@ -131,3 +132,28 @@ JOIN _Order o ON dp.dp_id = o.order_dp_id
 GROUP BY dp.dp_id
 ORDER BY num_deliveries DESC
 LIMIT 10;
+
+select * from Customer;
+
+select * from Admin;
+
+select * from Delivery_Partner;
+
+select * from Product;
+
+UPDATE Product SET p_stock = p_stock + 12 WHERE p_id=1;
+SELECT * FROM Delivery_Partner WHERE dp_username ="ddansken2";
+
+Select * FROM Delivery_Partner WHERE dp_id=11;
+
+insert into Admin (admin_id, admin_username, admin_password) values (100000, 'a', 'a');
+insert into Seller (s_id, s_username, s_password, s_firstname, s_lastname, s_mobile, s_email, s_city, S_pin_code) values (100000, 'a', 'a', 'Boigie', 'Tschursch', 9237956099, 'btschursch5@cloudflare.com', 'Enskededalen', '121 32');
+insert into Delivery_Partner (dp_id, dp_username, dp_password, dp_firstname, dp_lastname, dp_mobile, dp_email, dp_city, dp_pin_code) values (100000, 'a', 'a', 'Arluene', 'Cutchee', 5737982881, 'acutchee2m@cdc.gov', 'Mosoc Llacta', null);
+insert into Customer (cus_id, cus_username, cus_password, cus_firstname, cus_lastname, cus_mobile, cus_email, cus_street, cus_city, cus_pin_code, cus_cart_id, cus_sub_id, cus_wallet) values (100000, 'a', 'a', 'Natalina', 'Hanscombe', 5811320105, 'nhanscombe6c@blogs.com', 'Clemons', 'Šoštanj', '3325', 100000, 100000, 614848);
+insert into Cart (cart_id, total_price) values (100000, 197922);
+insert into Subscription (sub_id, sub_name) values (100000, 'gold');
+
+delete from delivery_partner where dp_id=100000;
+
+select * from Delivery_Partner where dp_id=100000;
+select * from Delivery_Partner;
