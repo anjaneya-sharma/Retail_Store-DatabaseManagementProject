@@ -1,12 +1,12 @@
 CREATE TABLE Admin(
-	admin_id INT NOT NULL UNIQUE,
+	admin_id INT NOT NULL UNIQUE AUTO_INCREMENT,
     admin_username VARCHAR(255) NOT NULL UNIQUE,
     admin_password VARCHAR(255) NOT NULL,
     PRIMARY KEY (admin_id)
 );
 
 CREATE TABLE Payment(
-	pt_id INT NOT NULL UNIQUE,
+	pt_id INT NOT NULL UNIQUE AUTO_INCREMENT,
     pt_amount INT DEFAULT 0,
     pt_date_time DATE,
     PRIMARY KEY (pt_id),
@@ -27,7 +27,7 @@ CREATE TABLE Pays(
 );
 
 CREATE TABLE Cart(
-	cart_id INT NOT NULL UNIQUE ,
+	cart_id INT NOT NULL UNIQUE AUTO_INCREMENT,
 	total_price INT DEFAULT 0,
     PRIMARY KEY(cart_id),
     
@@ -35,13 +35,13 @@ CREATE TABLE Cart(
 );
 
 CREATE TABLE Category(
-	cat_id INT NOT NULL UNIQUE,
+	cat_id INT NOT NULL UNIQUE AUTO_INCREMENT,
     cat_name VARCHAR(255) NOT NULL ,
     PRIMARY KEY (cat_id)
 );
 
 CREATE TABLE Seller(
-	s_id INT NOT NULL UNIQUE,
+	s_id INT NOT NULL UNIQUE AUTO_INCREMENT,
     s_username VARCHAR(255) NOT NULL UNIQUE,
     s_password VARCHAR(255) NOT NULL,
     
@@ -56,9 +56,11 @@ CREATE TABLE Seller(
 );
 
 CREATE TABLE Delivery_Partner(
-	dp_id INT NOT NULL UNIQUE,
+	dp_id INT NOT NULL UNIQUE AUTO_INCREMENT,
     dp_username VARCHAR(255) NOT NULL UNIQUE,
     dp_password VARCHAR(255) NOT NULL,
+
+    dp_salary INT NOT NULL,
 
 	dp_firstname VARCHAR(255) NOT NULL,
 	dp_lastname VARCHAR(255) NOT NULL,
@@ -71,13 +73,13 @@ CREATE TABLE Delivery_Partner(
 );
 
 CREATE TABLE Subscription(
-	sub_id INT NOT NULL UNIQUE,
+	sub_id INT NOT NULL UNIQUE AUTO_INCREMENT,
     sub_name VARCHAR(255) NOT NULL,
     PRIMARY KEY (sub_id)
 );
 
 CREATE TABLE Product(
-	p_id INT NOT NULL UNIQUE,
+	p_id INT NOT NULL UNIQUE AUTO_INCREMENT,
     p_name VARCHAR(255) NOT NULL,
 	p_cost INT NOT NULL,
     p_descrip VARCHAR(500),
@@ -91,7 +93,7 @@ CREATE TABLE Product(
 );
 
 CREATE TABLE Cart_Product_List(
-	cp_id INT NOT NULL UNIQUE,
+	cp_id INT NOT NULL UNIQUE AUTO_INCREMENT,
     cp_quantity INT,
     cp_cart_id INT NOT NULL,
     cp_price INT ,
@@ -104,7 +106,7 @@ CREATE TABLE Cart_Product_List(
 );
 
 CREATE TABLE _Order (
-	order_id INT NOT NULL UNIQUE,
+	order_id INT NOT NULL UNIQUE AUTO_INCREMENT,
     order_delivery_status VARCHAR(255) NOT NULL ,
     order_dp_id INT NOT NULL ,
     order_date  DATE NOT NULL ,
@@ -124,7 +126,7 @@ CREATE TABLE _Order (
     FOREIGN KEY(order_dp_id) REFERENCES Delivery_Partner(dp_id)
 );
 CREATE TABLE Customer(
-	cus_id INT NOT NULL UNIQUE,
+	cus_id INT NOT NULL UNIQUE AUTO_INCREMENT,
     cus_username VARCHAR(255) NOT NULL UNIQUE,
     cus_password VARCHAR(255) NOT NULL,
     
@@ -149,7 +151,7 @@ CREATE TABLE Customer(
 );
 
 CREATE TABLE Cust_History(
-	cus_id INT NOT NULL UNIQUE,
+	cus_id INT NOT NULL UNIQUE AUTO_INCREMENT,
     cus_firstname VARCHAR(255) NOT NULL,
     cus_lastname VARCHAR(255) NOT NULL,
     delet_date timestamp default now()
@@ -169,11 +171,52 @@ CREATE TABLE is_added_to(
 
 -- debug
 
-drop table Admin, _Order,Payment, Places, Pays, Cart_Product_List, Cart, Category, Seller, Delivery_Partner, Product, Subscription, Customer;
+drop table Admin, _Order,Payment, Places, Pays, Cart_Product_List, Cart, Category, Seller, Delivery_Partner, Product, Subscription, Customer, cust_history;
 show tables;
 
 CREATE DATABASE online_retail_store;
 USE online_retail_store;
+
+ -- Triggers 
+delimiter //
+CREATE TRIGGER ANOTHER_ONE
+before insert on Customer
+for each row 
+set new.cus_wallet=new.cus_wallet+100;
+end ; //
+delimiter ;
+ 
+ 
+-- salary basic 
+delimiter //
+CREATE TRIGGER basic_salary
+BEFORE INSERT ON Delivery_Partner
+for each row 
+set new.dp_salary=10000;
+end //
+delimiter;
+
+-- Delete History
+
+delimiter %%
+CREATE TRIGGER delete_history
+BEFORE DELETE ON Customer
+for each row
+begin
+insert into Cust_History(cus_id, cus_firstname , cus_lastname)
+value(old.cus_id,old.cus_firstname, old.cus_lastname);
+end ; %%
+delimiter ;
+
+
+--  *******************************************************************************************************
+
+drop trigger ANOTHER_ONE;
+drop trigger delete_history;
+drop trigger basic_salary;
+
+--  *******************************************************************************************************
+
 
 ALTER TABLE Admin AUTO_INCREMENT=101;
 ALTER TABLE Payment AUTO_INCREMENT=201;
