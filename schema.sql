@@ -76,7 +76,6 @@ CREATE TABLE Subscription(
     PRIMARY KEY (sub_id)
 );
 
-
 CREATE TABLE Product(
 	p_id INT NOT NULL UNIQUE,
     p_name VARCHAR(255) NOT NULL,
@@ -148,7 +147,13 @@ CREATE TABLE Customer(
     
     CONSTRAINT wallet_ballance CHECK(cus_wallet>=0)
 );
- 
+
+CREATE TABLE Cust_History(
+	cus_id INT NOT NULL UNIQUE,
+    cus_firstname VARCHAR(255) NOT NULL,
+    cus_lastname VARCHAR(255) NOT NULL,
+    delet_date timestamp default now()
+); 
  
 -- EXTRAS
 
@@ -156,13 +161,16 @@ CREATE TABLE Manages(
 	m_admin_id INT NOT NULL,
     m_p_id INT NOT NULL 
 );
+
 CREATE TABLE is_added_to(
 	iat_cart_id INT NOT NULL,
     iat_p_id INT NOT NULL
 );
+
 -- debug
+
 drop table Admin, _Order,Payment, Places, Pays, Cart_Product_List, Cart, Category, Seller, Delivery_Partner, Product, Subscription, Customer;
 show tables;
 
-CREATE DATABASE Online_Retail_Store;
-USE Online_Retail_Store;
+CREATE DATABASE online_retail_store;
+USE online_retail_store;
