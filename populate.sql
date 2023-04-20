@@ -3598,3 +3598,24 @@ insert into Places (pl_cus_id, pl_order_id, pl_cart_id) values (197, 197, 197);
 insert into Places (pl_cus_id, pl_order_id, pl_cart_id) values (198, 198, 198);
 insert into Places (pl_cus_id, pl_order_id, pl_cart_id) values (199, 199, 199);
 insert into Places (pl_cus_id, pl_order_id, pl_cart_id) values (200, 200, 200);
+
+insert into Cust_History(cus_id,cus_firstname,cus_lastname,delet_date) values (315 , 'Anjaneya' , 'Sharma' , '2023-01-20 08:52:03');
+insert into Cust_History(cus_id,cus_firstname,cus_lastname,delet_date) values (320 , 'Fungsuk' , 'Wangdu' , '2023-01-20 09:29:53');
+insert into Cust_History(cus_id,cus_firstname,cus_lastname,delet_date) values (325 , 'Raju' , 'Rastogi' , '2023-01-20 10:42:27');
+insert into Cust_History(cus_id,cus_firstname,cus_lastname,delet_date) values (330 , 'Ameya' , 'Kumar' , '2019-09-20 13:47:03');
+
+SET SQL_SAFE_UPDATES=0;
+UPDATE Cart_Product_List
+SET cp_price = (
+	SELECT p_cost * cp_quantity
+	FROM Product
+	WHERE Product.p_id = Cart_Product_List.cp_pid
+);
+
+UPDATE Cart
+SET total_price = (
+    SELECT SUM(cp_price)
+    FROM Cart_Product_List
+    WHERE cp_cart_id = Cart.cart_id
+);
+SET SQL_SAFE_UPDATES=1;
