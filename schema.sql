@@ -17,7 +17,7 @@ CREATE TABLE Payment(
 CREATE TABLE Places(
 	pl_cus_id INT NOT NULL,
     pl_order_id INT NOT NULL UNIQUE,
-    pl_cart_id INT NOT NULL UNIQUE
+    pl_cart_id INT NOT NULL
 );
 
 CREATE TABLE Pays(
