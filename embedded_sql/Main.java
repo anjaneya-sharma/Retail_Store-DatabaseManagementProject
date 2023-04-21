@@ -811,70 +811,122 @@ public class Main {
 
                 } else if (op == 5) {   // customer signup
 
-//                    String cname;
-//                    String cpass;
-//                    String c_firstname;
-//                    String c_lastname;
-//                    String c_email;
-//                    String c_city;
-//                    String c_pincode;
-//                    double dp_mobile;
-//
-//                    System.out.println("Enter Username   : ");
-//                    dpname = sc.nextLine();
-//
-//                    System.out.println("\nEnter Password   : ");
-//                    dppass = sc.nextLine();
-//
-//                    System.out.println("\nEnter First Name : ");
-//                    dp_firstname = sc.nextLine();
-//
-//                    System.out.println("\nEnter Last Name  : ");
-//                    dp_lastname = sc.nextLine();
-//
-//                    System.out.println("\nEnter Mobile No. : ");
-//                    dp_mobile = sc.nextDouble();
-//
-//                    System.out.println("\nEnter E mail     : ");
-//                    dp_email = sc.nextLine();
-//
-//                    sc.nextLine();
-//
-//                    System.out.println("\nEnter City       : ");
-//                    dp_city = sc.nextLine();
-//
-//                    System.out.println("\nEnter Pin Code   : ");
-//                    dp_pincode = sc.nextLine();
-//
-//                    String q11 = "INSERT INTO Delivery_Partner (dp_username,dp_password," +
-//                            "dp_firstname,dp_lastname,dp_mobile,dp_email,dp_city," +
-//                            "dp_pin_code) VALUES (?,?,?,?,?,?,?,?)";
-//
-//                    PreparedStatement st11 = con.prepareStatement(q11);
-//
-//                    st11.setString(1, dpname);
-//                    st11.setString(2, dppass);
-//                    st11.setString(3, dp_firstname);
-//                    st11.setString(4, dp_lastname);
-//                    st11.setDouble(5, dp_mobile);
-//                    st11.setString(6, dp_email);
-//                    st11.setString(7, dp_city);
-//                    st11.setString(8, dp_pincode);
-//
-//                    int rs11;
-//
-//                    try {
-//                        rs11 = st11.executeUpdate();
-//                        if (rs11 == 1) {
-//                            System.out.println("\nDelivery Partner Added Successfully");
-//                        } else {
-//                            System.out.println("\nEncountered unknown error while adding Delivery Partner");
-//                        }
-//                    } catch (SQLIntegrityConstraintViolationException e) {
-//                        System.out.println("\nDelivery Partner with username " + dpname + " already exists.");
-//                    }
-//                    st11.close();
+                    String cname;
+                    String cpass;
+                    String c_firstname;
+                    String c_lastname;
+                    String c_email;
+                    String c_street;
+                    String c_city;
+                    String c_pincode;
+                    double c_mobile;
+                    int    c_wallet;
 
+                    System.out.println("Enter Username       : ");
+                    cname = sc.nextLine();
+
+                    System.out.println("\nEnter Password       : ");
+                    cpass = sc.nextLine();
+
+                    System.out.println("\nEnter First Name     : ");
+                    c_firstname = sc.nextLine();
+
+                    System.out.println("\nEnter Last Name      : ");
+                    c_lastname = sc.nextLine();
+
+                    System.out.println("\nEnter Mobile No.     : ");
+                    c_mobile = sc.nextDouble();
+
+                    System.out.println("\nEnter E mail         : ");
+                    c_email = sc.nextLine();
+
+                    sc.nextLine();
+
+                    System.out.println("\nEnter Street         : ");
+                    c_street = sc.nextLine();
+
+                    System.out.println("\nEnter City           : ");
+                    c_city = sc.nextLine();
+
+                    System.out.println("\nEnter Pin Code       : ");
+                    c_pincode = sc.nextLine();
+
+                    System.out.println("\nEnter Wallet Balance : ");
+                    c_wallet = sc.nextInt();
+
+                    sc.nextLine();
+
+                    String q50 = "INSERT INTO Cart (total_price) VALUES (0)";
+
+                    PreparedStatement st50 = con.prepareStatement(q50);
+                    int rs50 = st50.executeUpdate();
+
+                    if (rs50 == 1) {
+                        System.out.println("\nNew Cart Added Successfully!");
+                    } else {
+                        System.out.println("\nEncountered unknown error while adding a new cart!");
+                        break;
+                    }
+
+                    String q51 = "SELECT LAST_INSERT_ID()";
+
+                    PreparedStatement st51 = con.prepareStatement(q51);
+
+                    ResultSet rs51 = st51.executeQuery();
+                    int c_cart_id = rs51.getInt(1);
+
+                    String q52 = "INSERT INTO Subscription (sub_name) VALUES ('silver')";
+
+                    PreparedStatement st52 = con.prepareStatement(q50);
+                    int rs52 = st52.executeUpdate();
+
+                    if (rs52 == 1) {
+                        System.out.println("\nNew Subscription Created Successfully!");
+                    } else {
+                        System.out.println("\nEncountered unknown error while creating a new subscription!");
+                        break;
+                    }
+
+                    String q53 = "SELECT LAST_INSERT_ID()";
+
+                    PreparedStatement st53 = con.prepareStatement(q53);
+
+                    ResultSet rs53 = st53.executeQuery();
+                    int c_sub_id = rs53.getInt(1);
+
+                    String q5 = "INSERT INTO Customer (cus_username,cus_password," +
+                            "cus_firstname,cus_lastname,cus_mobile,cus_email,cus_street," +
+                            "cus_city,cus_pin_code,cus_cart_id,cus_sub_id,cus_wallet) "+
+                            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+
+                    PreparedStatement st5 = con.prepareStatement(q5);
+
+                    st5.setString(1, cname);
+                    st5.setString(2, cpass);
+                    st5.setString(3, c_firstname);
+                    st5.setString(4, c_lastname);
+                    st5.setDouble(5, c_mobile);
+                    st5.setString(6, c_email);
+                    st5.setString(7, c_street);
+                    st5.setString(8, c_city);
+                    st5.setString(9, c_pincode);
+                    st5.setInt(10, c_cart_id);
+                    st5.setInt(11, c_sub_id);
+                    st5.setInt(12,c_wallet);
+
+                    int rs5;
+
+                    try {
+                        rs5 = st5.executeUpdate();
+                        if (rs5 == 1) {
+                            System.out.println("\nCustomer Added Successfully");
+                        } else {
+                            System.out.println("\nEncountered unknown error while adding Customer");
+                        }
+                    } catch (SQLIntegrityConstraintViolationException e) {
+                        System.out.println("\nCustomer with username " + cname + " already exists.");
+                    }
+                    st5.close();
 
                 } else if (op == 6) { // check trending categories
 
