@@ -136,15 +136,20 @@ public class Main {
                                 st11.setString(7, dp_city);
                                 st11.setString(8, dp_pincode);
 
-                                int rs11 = st11.executeUpdate();
+                                int rs11;
 
-                                if (rs11 == 1) {
-                                    System.out.println("\nDelivery Partner Added Successfully");
-                                } else {
-                                    System.out.println("\nEncountered error while adding Delivery Partner");
+                                try {
+                                    rs11 = st11.executeUpdate();
+                                    if (rs11 == 1) {
+                                        System.out.println("\nDelivery Partner Added Successfully");
+                                    } else {
+                                        System.out.println("\nEncountered unknown error while adding Delivery Partner");
+                                    }
+                                } catch (SQLIntegrityConstraintViolationException e) {
+                                    System.out.println("\nDelivery Partner with username " + dpname + " already exists.");
                                 }
-
                                 st11.close();
+
                             } else if (opt == 2) {
 
                                 while (true) {
@@ -263,15 +268,21 @@ public class Main {
                                 st13.setString(7, s_city);
                                 st13.setString(8, s_pincode);
 
-                                int rs13 = st13.executeUpdate();
+                                int rs13;
 
-                                if (rs13 == 1) {
-                                    System.out.println("\nSeller Added Successfully");
-                                } else {
-                                    System.out.println("\nEncountered error while adding Seller");
+                                try{
+                                    rs13 = st13.executeUpdate();
+                                    if (rs13 == 1) {
+                                        System.out.println("\nSeller Added Successfully");
+                                    } else {
+                                        System.out.println("\nEncountered error while adding Seller");
+                                    }
+                                } catch (SQLIntegrityConstraintViolationException e) {
+                                    System.out.println("\nSeller with username " + sname + " already exists.");
                                 }
 
                                 st13.close();
+
                             } else if (opt == 4 ) {
 
                                 while (true) {
@@ -482,23 +493,9 @@ public class Main {
                                 String q110 = "Select * FROM Cust_History ";
                                 PreparedStatement st110 = con.prepareStatement(q110);
 
-//                            System.out.println("Enter the customer  id");
-//                            int dpid=sc.nextInt();
-//                            sc.nextLine();
-
-//                            st110.setInt(1,dpid);
-
                                 ResultSet rs110 = st110.executeQuery();
 
-                                // java.util.Date date;
-                                // Timestamp timestamp = resultSet.getTimestamp(i);
-                                // if (timestamp != null)
-                                //     date = new java.util.Date(timestamp.getTime()));
-
                                 while (rs110.next()) {
-//                                System.out.println(String.format("Customer id = %d , Firstname = %s , Lastname = %s ,  Date of Leaving =%s ",
-//                                        rs110.getString(1),rs110.getString(2),rs110.getString(3), rs110.getTime(4)
-//                                ));
                                     System.out.println("Customer id =" + rs110.getString(1));
                                     System.out.println("Firstname:" + rs110.getString(2));
                                     System.out.println("Lastname:" + rs110.getString(3));
@@ -811,12 +808,72 @@ public class Main {
 
 
                 } else if (op == 5) {   // customer signup
-                    System.out.println("Enter your user id");
-                    String usrid_csu = sc.nextLine();
-                    System.out.println("Enter your password");
+
+//                    String cname;
+//                    String cpass;
+//                    String c_firstname;
+//                    String c_lastname;
+//                    String c_email;
+//                    String c_city;
+//                    String c_pincode;
+//                    double dp_mobile;
+//
+//                    System.out.println("Enter Username   : ");
+//                    dpname = sc.nextLine();
+//
+//                    System.out.println("\nEnter Password   : ");
+//                    dppass = sc.nextLine();
+//
+//                    System.out.println("\nEnter First Name : ");
+//                    dp_firstname = sc.nextLine();
+//
+//                    System.out.println("\nEnter Last Name  : ");
+//                    dp_lastname = sc.nextLine();
+//
+//                    System.out.println("\nEnter Mobile No. : ");
+//                    dp_mobile = sc.nextDouble();
+//
+//                    System.out.println("\nEnter E mail     : ");
+//                    dp_email = sc.nextLine();
+//
+//                    sc.nextLine();
+//
+//                    System.out.println("\nEnter City       : ");
+//                    dp_city = sc.nextLine();
+//
+//                    System.out.println("\nEnter Pin Code   : ");
+//                    dp_pincode = sc.nextLine();
+//
+//                    String q11 = "INSERT INTO Delivery_Partner (dp_username,dp_password," +
+//                            "dp_firstname,dp_lastname,dp_mobile,dp_email,dp_city," +
+//                            "dp_pin_code) VALUES (?,?,?,?,?,?,?,?)";
+//
+//                    PreparedStatement st11 = con.prepareStatement(q11);
+//
+//                    st11.setString(1, dpname);
+//                    st11.setString(2, dppass);
+//                    st11.setString(3, dp_firstname);
+//                    st11.setString(4, dp_lastname);
+//                    st11.setDouble(5, dp_mobile);
+//                    st11.setString(6, dp_email);
+//                    st11.setString(7, dp_city);
+//                    st11.setString(8, dp_pincode);
+//
+//                    int rs11;
+//
+//                    try {
+//                        rs11 = st11.executeUpdate();
+//                        if (rs11 == 1) {
+//                            System.out.println("\nDelivery Partner Added Successfully");
+//                        } else {
+//                            System.out.println("\nEncountered unknown error while adding Delivery Partner");
+//                        }
+//                    } catch (SQLIntegrityConstraintViolationException e) {
+//                        System.out.println("\nDelivery Partner with username " + dpname + " already exists.");
+//                    }
+//                    st11.close();
 
 
-                    String pwd_csu = sc.nextLine();    // check if they exist , then ask for another , else add it to the table
                 } else if (op == 6) { // check trending categories
 
                     String q6 = "SELECT p.p_name, COUNT(DISTINCT cpl.cp_cart_id) as cart_count " +
