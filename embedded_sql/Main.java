@@ -840,6 +840,8 @@ public class Main {
                     System.out.println("\nEnter E mail         : ");
                     c_email = sc.nextLine();
 
+                    sc.nextLine();
+
                     System.out.println("\nEnter Street         : ");
                     c_street = sc.nextLine();
 
@@ -854,6 +856,8 @@ public class Main {
 
                     sc.nextLine();
 
+
+                    con.setAutoCommit(false);
                     String q50 = "INSERT INTO Cart (total_price) VALUES (0)";
 
                     PreparedStatement st50 = con.prepareStatement(q50);
@@ -863,6 +867,7 @@ public class Main {
                         System.out.println("\nNew Cart Added Successfully!");
                     } else {
                         System.out.println("\nEncountered unknown error while adding a new cart!");
+                        con.rollback();
                         break;
                     }
                     st50.close();
@@ -877,9 +882,7 @@ public class Main {
                     if(rs51.next()){
                         c_cart_id = rs51.getInt(1);
                     }
-                    if(c_cart_id == -999){
-                        System.out.println("The result set was empty! Impossible Event!");
-                    }
+
                     st51.close();
 
                     String q52 = "INSERT INTO Subscription (sub_name) VALUES ('silver')";
@@ -891,6 +894,7 @@ public class Main {
                         System.out.println("\nNew Subscription Created Successfully!");
                     } else {
                         System.out.println("\nEncountered unknown error while creating a new subscription!");
+                        con.rollback();
                         break;
                     }
                     st52.close();
@@ -906,9 +910,7 @@ public class Main {
                     if(rs53.next()){
                         c_sub_id = rs53.getInt(1);
                     }
-                    if(c_sub_id == -999){
-                        System.out.println("The result set was empty! Impossible Event!");
-                    }
+
                     st53.close();
 
                     String q5 = "INSERT INTO Customer (cus_username,cus_password," +
@@ -937,11 +939,16 @@ public class Main {
                         rs5 = st5.executeUpdate();
                         if (rs5 == 1) {
                             System.out.println("\nCustomer Added Successfully");
+                            con.commit();
                         } else {
                             System.out.println("\nEncountered unknown error while adding Customer");
+                            con.rollback();
                         }
                     } catch (SQLIntegrityConstraintViolationException e) {
                         System.out.println("\nCustomer with username " + cname + " already exists.");
+                        con.rollback();
+                    } finally {
+                        con.setAutoCommit(true);
                     }
                     st5.close();
 
