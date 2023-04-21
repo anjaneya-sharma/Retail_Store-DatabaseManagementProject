@@ -865,6 +865,7 @@ public class Main {
                         System.out.println("\nEncountered unknown error while adding a new cart!");
                         break;
                     }
+                    st50.close();
 
                     String q51 = "SELECT LAST_INSERT_ID()";
 
@@ -879,6 +880,7 @@ public class Main {
                     if(c_cart_id == -999){
                         System.out.println("The result set was empty! Impossible Event!");
                     }
+                    st51.close();
 
                     String q52 = "INSERT INTO Subscription (sub_name) VALUES ('silver')";
 
@@ -891,6 +893,7 @@ public class Main {
                         System.out.println("\nEncountered unknown error while creating a new subscription!");
                         break;
                     }
+                    st52.close();
 
                     String q53 = "SELECT LAST_INSERT_ID()";
 
@@ -906,6 +909,7 @@ public class Main {
                     if(c_sub_id == -999){
                         System.out.println("The result set was empty! Impossible Event!");
                     }
+                    st53.close();
 
                     String q5 = "INSERT INTO Customer (cus_username,cus_password," +
                             "cus_firstname,cus_lastname,cus_mobile,cus_email,cus_street," +
