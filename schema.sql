@@ -31,7 +31,7 @@ CREATE TABLE Cart(
 	total_price INT DEFAULT 0,
     PRIMARY KEY(cart_id),
     
-    CONSTRAINT prc CHECK (total_price>0)
+    CONSTRAINT prc CHECK (total_price>=0)
 );
 
 CREATE TABLE Category(
