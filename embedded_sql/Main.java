@@ -173,16 +173,17 @@ public class Main {
                                         int rs121 = 0;
                                         try {
                                             rs121 = st121.executeUpdate();
+                                            if (rs121 == 1) {
+                                                System.out.println("Delivery Partner removed successfully");
+                                            } else {
+                                                System.out.println("Encountered error while removing delivery partner");
+                                            }
                                         }catch(SQLException e){
                                             if (e.getSQLState().equals("23000")) {
                                                 System.out.println("You cannot remove Delivery Partner with pending Deliveries!");
                                             }
                                         }
-                                        if (rs121 == 1) {
-                                            System.out.println("Delivery Partner removed successfully");
-                                        } else {
-                                            System.out.println("Encountered error while removing delivery partner");
-                                        }
+
                                         st121.close();
 
                                     } else if (opt2 == 2) {
