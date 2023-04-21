@@ -809,7 +809,7 @@ public class Main {
                     }
 
 
-                } else if (op == 5) {   // customer signup
+                } else if (op == 5) {
 
                     String cname;
                     String cpass;
@@ -839,8 +839,6 @@ public class Main {
 
                     System.out.println("\nEnter E mail         : ");
                     c_email = sc.nextLine();
-
-                    sc.nextLine();
 
                     System.out.println("\nEnter Street         : ");
                     c_street = sc.nextLine();
@@ -873,11 +871,18 @@ public class Main {
                     PreparedStatement st51 = con.prepareStatement(q51);
 
                     ResultSet rs51 = st51.executeQuery();
-                    int c_cart_id = rs51.getInt(1);
+                    int c_cart_id = -999;
+
+                    if(rs51.next()){
+                        c_cart_id = rs51.getInt(1);
+                    }
+                    if(c_cart_id == -999){
+                        System.out.println("The result set was empty! Impossible Event!");
+                    }
 
                     String q52 = "INSERT INTO Subscription (sub_name) VALUES ('silver')";
 
-                    PreparedStatement st52 = con.prepareStatement(q50);
+                    PreparedStatement st52 = con.prepareStatement(q52);
                     int rs52 = st52.executeUpdate();
 
                     if (rs52 == 1) {
@@ -892,7 +897,15 @@ public class Main {
                     PreparedStatement st53 = con.prepareStatement(q53);
 
                     ResultSet rs53 = st53.executeQuery();
-                    int c_sub_id = rs53.getInt(1);
+
+                    int c_sub_id = -999;
+
+                    if(rs53.next()){
+                        c_sub_id = rs53.getInt(1);
+                    }
+                    if(c_sub_id == -999){
+                        System.out.println("The result set was empty! Impossible Event!");
+                    }
 
                     String q5 = "INSERT INTO Customer (cus_username,cus_password," +
                             "cus_firstname,cus_lastname,cus_mobile,cus_email,cus_street," +
@@ -912,7 +925,7 @@ public class Main {
                     st5.setString(9, c_pincode);
                     st5.setInt(10, c_cart_id);
                     st5.setInt(11, c_sub_id);
-                    st5.setInt(12,c_wallet);
+                    st5.setInt(12, c_wallet);
 
                     int rs5;
 
