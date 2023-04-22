@@ -618,14 +618,17 @@ public class Main {
                     if (ans == 1) {
                         while (true) {
                             System.out.println("\nChoose one of the options");
-                            System.out.println("\n1) Check wallet balance");
-                            System.out.println("2) Update wallet balance");
-                            System.out.println("3) View cart");
-                            System.out.println("4) Check Subscription");
-                            System.out.println("5) Upgrade Subscription");
-                            System.out.println("6) Delete Account");
-                            System.out.println("7) Checkout");
-                            System.out.println("8) Back");
+                            System.out.println("\n1)  Check wallet balance");
+                            System.out.println("2)  Update wallet balance");
+                            System.out.println("3)  View cart");
+                            System.out.println("4)  Check Subscription");
+                            System.out.println("5)  Upgrade Subscription");
+                            System.out.println("6)  Browse Catalog");
+                            System.out.println("7)  Add a Product");
+                            System.out.println("8)  Remove a Product");
+                            System.out.println("9)  Delete Account");
+                            System.out.println("10) Checkout");
+                            System.out.println("11) Back");
 
 
                             System.out.println("\nEnter your option");
@@ -664,7 +667,7 @@ public class Main {
 
                                 st33.close();
 
-                            } else if (opt == 6) {
+                            } else if (opt == 9) {
                                 String q36 = "DELETE FROM Customer WHERE cus_username=?";
                                 PreparedStatement st36 = con.prepareStatement(q36);
 
@@ -682,10 +685,26 @@ public class Main {
 
                                 st36.close();
 
-                            } else if (opt == 7) {
+                            } else if (opt == 10) {
 
                                 try {
                                     con.setAutoCommit(false);
+
+                                    String q3718 = "SELECT cp_pid,cp_quantity FROM Cart_Product_List" +
+                                            " WHERE cp_cart_id = (SELECT cus_cart_id FROM Customer" +
+                                            " WHERE cus_username=?)";
+
+                                    PreparedStatement st3718 = con.prepareStatement(q3718);
+                                    st3718.setString(1, usridc);
+                                    ResultSet rs3718 = st3718.executeQuery();
+
+                                    int ans2=0;
+                                    if( rs3718.next() ){
+                                        st3718.close();
+                                    }else{
+                                        st3718.close();
+                                        throw new SQLException("The Cart is Empty!");
+                                    }
 
                                     String q371 = "SELECT cp_pid,cp_quantity FROM Cart_Product_List" +
                                                   " WHERE cp_cart_id = (SELECT cus_cart_id FROM Customer" +
@@ -973,8 +992,8 @@ public class Main {
 
                                     st3717.setInt(1,o_cart_id);
 
-                                    int rs3718 = st3717.executeUpdate();
-                                    if( rs3718 > 0 ){
+                                    int rs3717 = st3717.executeUpdate();
+                                    if( rs3717 > 0 ){
 //                                        System.out.println("Set Cart value to zero!");
                                     }else{
                                         st3717.close();
@@ -992,7 +1011,7 @@ public class Main {
                                     con.setAutoCommit(true);
                                 }
 
-                            } else if (opt == 8) {
+                            } else if (opt == 11) {
                                 break;
                             } else {
                                 System.out.println("\nInvalid Choice!");
