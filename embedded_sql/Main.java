@@ -734,7 +734,7 @@ public class Main {
 
                                     if ( o_price > balance) {
                                         st373.close();
-                                        throw new SQLException("You are " + (balance - o_price) + " INR short! Remove Items from Cart or Add more Credits to continue");
+                                        throw new SQLException("You are " + ( o_price - balance ) + " INR short! Remove Items from Cart or Add more Credits to continue");
                                     }
                                     st373.close();
 
@@ -806,7 +806,7 @@ public class Main {
                                     int rs376 = st376.executeUpdate();
 
                                     if (rs376 == 1){
-                                        System.out.println("Order Assembled Successfully!");
+//                                        System.out.println("Order Assembled Successfully!");
                                     } else {
                                         st376.close();
                                         throw new SQLException("Encountered unknown error while assembling Order");
@@ -846,7 +846,7 @@ public class Main {
 
                                     int rs379 = st379.executeUpdate();
                                     if( rs379 == 1 ){
-                                        System.out.println("Order Placed Successfully");
+//                                        System.out.println("Order Placed Successfully");
                                     }else{
                                         st379.close();
                                         throw new SQLException("Encountered unknown error while placing Order");
@@ -864,7 +864,7 @@ public class Main {
                                     int rs3710 = st3710.executeUpdate();
 
                                     if (rs3710 == 1){
-                                        System.out.println("Payment done Successfully!");
+//                                        System.out.println("Payment done Successfully!");
                                     } else {
                                         st3710.close();
                                         throw new SQLException("Encountered unknown error during Payment.");
@@ -892,18 +892,87 @@ public class Main {
 
                                     int rs3712 = st3712.executeUpdate();
                                     if( rs3712 == 1 ){
-                                        System.out.println("Payment processed Successfully");
+//                                        System.out.println("Payment processed Successfully");
                                     }else{
                                         st3712.close();
                                         throw new SQLException("Encountered unknown error while processing Payment");
                                     }
                                     st3712.close();
 
+
+                                    String q3714 = "SELECT cp_pid,cp_quantity FROM Cart_Product_List" +
+                                                   " WHERE cp_cart_id = ?";
+
+                                    PreparedStatement st3714 = con.prepareStatement(q3714);
+
+                                    st3714.setInt(1, o_cart_id);
+
+                                    ResultSet rs3714 = st3714.executeQuery();
+
+                                    while (rs3714.next()) {
+                                        String q3715 = "UPDATE Product SET p_stock = p_stock - ? WHERE p_id = ?";
+                                        PreparedStatement st3715 = con.prepareStatement(q3715);
+
+                                        st3715.setInt(1, rs3714.getInt(2));
+                                        st3715.setInt(2, rs3714.getInt(1));
+                                        int rs3715 = st3715.executeUpdate();
+
+                                        if( rs3715!=1 ){
+                                            st3715.close();
+                                            throw new SQLException("Encountered unknown error while removing product from stock");
+                                        }
+                                        st3715.close();
+                                    }
+                                    st3714.close();
+
+
+                                    String q3716 = "UPDATE Customer SET cus_wallet = cus_wallet - ? WHERE cus_id = ?";
+                                    PreparedStatement st3716 = con.prepareStatement(q3716);
+
+                                    st3716.setInt(1,o_price);
+                                    st3716.setInt(2,o_cus_id);
+
+                                    int rs3716 = st3716.executeUpdate();
+                                    if( rs3716 == 1 ){
+//                                        System.out.println("Cash Withdrawn Successfully!");
+                                    }else{
+                                        st3716.close();
+                                        throw new SQLException("Encountered unknown error while withdrawing cash");
+                                    }
+                                    st3716.close();
+
+
                                     String q3713 = "DELETE FROM Cart_Product_List WHERE cp_cart_id = ?";
                                     PreparedStatement st3713 = con.prepareStatement(q3713);
 
                                     st3713.setInt(1,o_cart_id);
-                                    
+
+                                    int rs3713 = st3713.executeUpdate();
+                                    if( rs3713 > 0 ){
+//                                        System.out.println("Emptied Cart!");
+                                    }else{
+                                        st3713.close();
+                                        System.out.println("cart id -> "+o_cart_id);
+                                        throw new SQLException("Encountered error while emptying cart");
+                                    }
+                                    st3713.close();
+
+
+                                    String q3717 = "UPDATE Cart SET total_price = 0 WHERE cart_id = ?";
+                                    PreparedStatement st3717 = con.prepareStatement(q3717);
+
+                                    st3717.setInt(1,o_cart_id);
+
+                                    int rs3718 = st3717.executeUpdate();
+                                    if( rs3718 > 0 ){
+//                                        System.out.println("Set Cart value to zero!");
+                                    }else{
+                                        st3717.close();
+                                        throw new SQLException("Encountered error while setting Cart value to zero");
+                                    }
+                                    st3717.close();
+                                    System.out.println("Checked out successfully!");
+
                                     con.commit();
 
                                 } catch (SQLException e){
