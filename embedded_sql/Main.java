@@ -804,6 +804,26 @@ public class Main {
                                         o_price = rs3_10_4.getInt(1);
                                     }
 
+                                    String q3_10_19 = "SELECT sub_name FROM Subscription WHERE sub_id=(" +
+                                                      " SELECT cus_sub_id FROM Customer where cus_username=?)";
+                                    PreparedStatement st3_10_19 = con.prepareStatement(q3_10_19);
+
+                                    st3_10_19.setString(1,usridc);
+                                    ResultSet rs3_10_19 = st3_10_19.executeQuery();
+
+                                    String sub = "";
+                                    if(rs3_10_19.next()){
+                                        sub = rs3_10_19.getString(1);
+                                    }
+
+                                    if(sub.equals("silver")){
+                                        o_price = (int)(0.95*o_price);
+                                    }else if(sub.equals("gold")){
+                                        o_price = (int)(0.90*o_price);
+                                    }else if(sub.equals("platinum")){
+                                        o_price = (int)(0.85*o_price);
+                                    }
+
                                     if ( o_price > balance) {
                                         st3_10_4.close();
                                         throw new SQLException("You are " + ( o_price - balance ) + " INR short! Remove Items from Cart or Add more Credits to continue");
@@ -931,7 +951,7 @@ public class Main {
                                                    " VALUES (?,CURRENT_DATE())";
 
                                     PreparedStatement st3_10_11 = con.prepareStatement(q3_10_11);
-
+                                    System.out.println("this is o_price -> "+o_price);
                                     st3_10_11.setInt(1,o_price);
 
                                     int rs3_10_11 = st3_10_11.executeUpdate();
