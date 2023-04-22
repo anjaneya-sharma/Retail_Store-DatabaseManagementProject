@@ -674,10 +674,42 @@ public class Main {
 
                             } else if (opt == 6) {
 
-                                String q36 = "SELECT cat_id, cat_name FROM Category";
-                                PreparedStatement st36 = con.prepareStatement(q36);
-                                
+                                while(true) {
+                                    String q360 = "SELECT cat_id, cat_name FROM Category";
+                                    PreparedStatement st360 = con.prepareStatement(q360);
 
+                                    ResultSet rs360 = st360.executeQuery();
+
+                                    System.out.println("\nList of Categories :\n");
+                                    while (rs360.next()) {
+                                        System.out.println("Cat. ID      ->  " + rs360.getInt(1));
+                                        System.out.println("Cat. Name    ->  " + rs360.getString(2) + "\n");
+                                    }
+                                    int cat_id = 0;
+                                    System.out.println("\nEnter Category ID to browse Products available in it : ");
+                                    System.out.println("(to exit type -1)");
+
+                                    cat_id = sc.nextInt();
+
+                                    if( cat_id == -1 ){
+                                        break;
+                                    }else{
+                                        String q361 = "SELECT p_id,p_name,p_descrip FROM Product WHERE p_stock>0 and p_cat_id=?";
+                                        PreparedStatement st361 = con.prepareStatement(q361);
+
+                                        st361.setInt(1,cat_id);
+                                        ResultSet rs361 = st361.executeQuery();
+
+                                        System.out.println("\nList of Products :\n");
+                                        while( rs361.next() ){
+                                            System.out.println("Product ID   ->  " + rs361.getInt(1));
+                                            System.out.println("Product Name ->  " + rs361.getString(2) + "\n");
+                                        }
+                                        System.out.println("Type anything to go back");
+                                        sc.nextLine();
+                                        sc.nextLine();
+                                    }
+                                }
                             } else if (opt == 9) {
                                 String q39 = "DELETE FROM Customer WHERE cus_username=?";
                                 PreparedStatement st39 = con.prepareStatement(q39);
