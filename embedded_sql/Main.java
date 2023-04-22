@@ -30,7 +30,7 @@ public class Main {
                 System.out.println("2) Seller Login");
                 System.out.println("3) Customer Login");
                 System.out.println("4) Delivery Partner Login");
-                System.out.println("5) Customer Signup");                   // TBD
+                System.out.println("5) Customer Signup");
                 System.out.println("6) Check Trending Categories");
                 System.out.println("7) Check Trending Products");
                 System.out.println("8) Exit");
@@ -43,10 +43,10 @@ public class Main {
                 sc.nextLine();
 
                 if (op == 1) {
-                    System.out.println("Enter your username");
-                    String usrida = sc.nextLine();                     // (14, 'aruded', 'kncbFp');
+                    System.out.println("\nEnter your username");
+                    String usrida = sc.nextLine();
 
-                    System.out.println("Enter your password");
+                    System.out.println("\nEnter your password");
                     String pwda = sc.nextLine();
 
                     String q1 = "Select * FROM Admin WHERE admin_username=? AND admin_password=?";
@@ -69,16 +69,16 @@ public class Main {
 
                     if (ans == 1) {
                         while (true) {
-                            System.out.println("\nChoose one of the options");
-                            System.out.println("\n1)  Add a Delivery Partner");         //done
-                            System.out.println("2)  Remove a Delivery Partner");        //done
-                            System.out.println("3)  Add a Seller");                     //done
-                            System.out.println("4)  Remove a Seller");                  //done
-                            System.out.println("5)  Remove a Customer");                //done
-                            System.out.println("6)  View Customer Details");            //done
-                            System.out.println("7)  View Delivery Partner Details");    //done
-                            System.out.println("8)  [OLAP] View Customers with most money spent");      //done
-                            System.out.println("9)  [OLAP] View Delivery Partner with most number of orders delivered");        //done
+                            System.out.println("\n\nChoose one of the options");
+                            System.out.println("\n1)  Add a Delivery Partner");
+                            System.out.println("2)  Remove a Delivery Partner");
+                            System.out.println("3)  Add a Seller");
+                            System.out.println("4)  Remove a Seller");
+                            System.out.println("5)  Remove a Customer");
+                            System.out.println("6)  View Customer Details");
+                            System.out.println("7)  View Delivery Partner Details");
+                            System.out.println("8)  [OLAP] View Customers with most money expensive cart");
+                            System.out.println("9)  [OLAP] View Delivery Partner with most number of orders delivered");
                             System.out.println("10) Show Customer History");
                             System.out.println("11) Back");
 
@@ -97,7 +97,7 @@ public class Main {
                                 String dp_pincode;
                                 double dp_mobile;
 
-                                System.out.println("Enter Username   : ");
+                                System.out.println("\nEnter Username   : ");
                                 dpname = sc.nextLine();
 
                                 System.out.println("\nEnter Password   : ");
@@ -155,6 +155,7 @@ public class Main {
                             } else if (opt == 2) {
 
                                 while (true) {
+                                    System.out.println("\nChoose one of the options");
                                     System.out.println("\n1. Remove Delivery Partner via ID");
                                     System.out.println("2. Remove Delivery Partner via username");
                                     System.out.println("3. Back");
@@ -176,13 +177,13 @@ public class Main {
                                         try {
                                             rs121 = st121.executeUpdate();
                                             if (rs121 == 1) {
-                                                System.out.println("Delivery Partner removed successfully");
+                                                System.out.println("\nDelivery Partner removed successfully");
                                             } else {
-                                                System.out.println("Encountered error while removing delivery partner");
+                                                System.out.println("\nEncountered error while removing delivery partner");
                                             }
                                         }catch(SQLException e){
                                             if (e.getSQLState().equals("23000")) {
-                                                System.out.println("You cannot remove Delivery Partner with pending Deliveries!");
+                                                System.out.println("\nYou cannot remove Delivery Partner with pending Deliveries!");
                                             }
                                         }
 
@@ -201,13 +202,13 @@ public class Main {
                                         try {
                                             rs122 = st122.executeUpdate();
                                             if (rs122 == 1) {
-                                                System.out.println("Delivery Partner removed successfully");
+                                                System.out.println("\nDelivery Partner removed successfully");
                                             } else {
-                                                System.out.println("Encountered error while removing delivery partner");
+                                                System.out.println("\nEncountered error while removing delivery partner");
                                             }
                                         }catch(SQLException e) {
                                             if (e.getSQLState().equals("23000")) {
-                                                System.out.println("You cannot remove Delivery Partner with pending Deliveries!");
+                                                System.out.println("\nYou cannot remove Delivery Partner with pending Deliveries!");
                                             }
                                         }
 
@@ -217,7 +218,7 @@ public class Main {
                                         break;
 
                                     } else {
-                                        System.out.println("Invalid Choice!");
+                                        System.out.println("\nInvalid Choice!");
                                     }
                                 }
                             } else if (opt == 3) {
@@ -231,7 +232,7 @@ public class Main {
                                 String s_pincode;
                                 double s_mobile;
 
-                                System.out.println("Enter Username   : ");
+                                System.out.println("\nEnter Username   : ");
                                 sname = sc.nextLine();
 
                                 System.out.println("\nEnter Password   : ");
@@ -290,6 +291,7 @@ public class Main {
                             } else if (opt == 4 ) {
 
                                 while (true) {
+                                    System.out.println("\nChoose one of the options");
                                     System.out.println("\n1. Remove Seller via ID");
                                     System.out.println("2. Remove Seller via username");
                                     System.out.println("3. Back");
@@ -310,9 +312,9 @@ public class Main {
                                         int rs141 = st141.executeUpdate();
 
                                         if (rs141 == 1) {
-                                            System.out.println("Seller removed successfully");
+                                            System.out.println("\nSeller removed successfully");
                                         } else {
-                                            System.out.println("Encountered error while removing seller");
+                                            System.out.println("\nEncountered error while removing seller");
                                         }
                                         st141.close();
 
@@ -328,9 +330,9 @@ public class Main {
                                         int rs142 = st142.executeUpdate();
 
                                         if (rs142 == 1) {
-                                            System.out.println("Seller removed successfully");
+                                            System.out.println("\nSeller removed successfully");
                                         } else {
-                                            System.out.println("Encountered error while removing seller");
+                                            System.out.println("\nEncountered error while removing seller");
                                         }
                                         st142.close();
 
@@ -338,13 +340,14 @@ public class Main {
                                         break;
 
                                     } else {
-                                        System.out.println("Invalid Choice!");
+                                        System.out.println("\nInvalid Choice!");
                                     }
                                 }
 
                             } else if (opt == 5) {
 
                                 while(true) {
+                                    System.out.println("\nChoose one of the options");
                                     System.out.println("\n1. Remove Customer via ID");
                                     System.out.println("2. Remove Customer via username");
                                     System.out.println("3. Back");
@@ -365,9 +368,9 @@ public class Main {
                                         int rs151 = st151.executeUpdate();
 
                                         if (rs151 == 1) {
-                                            System.out.println("Customer removed successfully");
+                                            System.out.println("\nCustomer removed successfully");
                                         } else {
-                                            System.out.println("Encountered error while removing Customer");
+                                            System.out.println("\nEncountered error while removing Customer");
                                         }
                                         st151.close();
 
@@ -383,9 +386,9 @@ public class Main {
                                         int rs152 = st152.executeUpdate();
 
                                         if (rs152 == 1) {
-                                            System.out.println("Customer removed successfully");
+                                            System.out.println("\nCustomer removed successfully");
                                         } else {
-                                            System.out.println("Encountered error while removing customer");
+                                            System.out.println("\nEncountered error while removing customer");
                                         }
                                         st152.close();
 
@@ -393,15 +396,15 @@ public class Main {
                                         break;
 
                                     }else{
-                                        System.out.println("Invalid Choice!");
+                                        System.out.println("\nInvalid Choice!");
                                     }
                                 }
 
                             } else if (opt == 6) {
-                                String q16 = "Select * FROM Customer WHERE cus_id=?";
+                                String q16 = "Select cus_id,cus_firstname,cus_lastname,cus_wallet FROM Customer WHERE cus_id=?";
                                 PreparedStatement st16 = con.prepareStatement(q16);
 
-                                System.out.println("Enter the customer id");
+                                System.out.println("\nEnter the Customer ID");
                                 int cid = sc.nextInt();
                                 sc.nextLine();
 
@@ -410,18 +413,19 @@ public class Main {
                                 ResultSet rs16 = st16.executeQuery();
 
                                 while (rs16.next()) {
-                                    System.out.println(String.format("Customer id = %s , Firstname = %s , Lastname = %s , Wallet Balance =%d ",
-                                            rs16.getInt(1), rs16.getString(4), rs16.getString(5), rs16.getInt(13)
-                                    ));
+                                    System.out.println("Customer ID                 = " + rs16.getInt(1));
+                                    System.out.println("Firstname                   = " + rs16.getString(2));
+                                    System.out.println("Lastname                    = " + rs16.getString(3));
+                                    System.out.println("Wallet                      = " + rs16.getInt(4));
                                 }
 
                                 st16.close();
 
                             } else if (opt == 7) {
-                                String q17 = "Select *  FROM Delivery_Partner WHERE dp_id=?";
+                                String q17 = "Select dp_id,dp_firstname,dp_lastname,dp_salary,dp_city FROM Delivery_Partner WHERE dp_id=?";
                                 PreparedStatement st17 = con.prepareStatement(q17);
 
-                                System.out.println("Enter the delivery partner id");
+                                System.out.println("\nEnter the Delivery Partner ID");
                                 int dpid = sc.nextInt();
                                 sc.nextLine();
 
@@ -430,9 +434,11 @@ public class Main {
                                 ResultSet rs17 = st17.executeQuery();
 
                                 while (rs17.next()) {
-                                    System.out.println(String.format("Customer id = %s , Firstname = %s , Lastname = %s ,  City =%s , Salary =%d ",
-                                            rs17.getInt(1), rs17.getString(2), rs17.getString(3), rs17.getString(6), rs17.getInt(4)
-                                    ));
+                                    System.out.println("Delivery Partner ID         = " + rs17.getInt(1));
+                                    System.out.println("Firstname                   = " + rs17.getString(2));
+                                    System.out.println("Lastname                    = " + rs17.getString(3));
+                                    System.out.println("salary                      = " + rs17.getInt(4));
+                                    System.out.println("City                        = " + rs17.getString(5)+"\n");
                                 }
 
                                 st17.close();
@@ -449,7 +455,7 @@ public class Main {
 
                                 PreparedStatement st18 = con.prepareStatement(q18);
 
-                                System.out.println("Enter how many customers from the top do you want to see ");
+                                System.out.println("\nEnter how many customers from the top do you want to see ");
                                 int cno = sc.nextInt();
                                 sc.nextLine();
 
@@ -458,9 +464,10 @@ public class Main {
                                 ResultSet rs18 = st18.executeQuery();
 
                                 while (rs18.next()) {
-                                    System.out.println(String.format("Customer id = %d , Firstname = %s , Lastname = %s ,  Total Spent =%d ",
-                                            rs18.getInt(1), rs18.getString(2), rs18.getString(3), rs18.getInt(4)
-                                    ));
+                                    System.out.println("Delivery Partner ID         = " + rs18.getInt(1));
+                                    System.out.println("Firstname                   = " + rs18.getString(2));
+                                    System.out.println("Lastname                    = " + rs18.getString(3));
+                                    System.out.println("Total Spent                 = " + rs18.getInt(4)+"\n");
                                 }
 
                                 st18.close();
@@ -475,7 +482,7 @@ public class Main {
 
                                 PreparedStatement st19 = con.prepareStatement(q19);
 
-                                System.out.println("Enter how many delivery partners from the top do you want to see ");
+                                System.out.println("\nEnter how many delivery partners from the top do you want to see ");
                                 int dpno = sc.nextInt();
                                 sc.nextLine();
 
@@ -484,9 +491,10 @@ public class Main {
                                 ResultSet rs19 = st19.executeQuery();
 
                                 while (rs19.next()) {
-                                    System.out.println(String.format("Delivery Partner ID = %d , Firstname = %s , Lastname = %s ,Total Deliveries Completed =%d ",
-                                            rs19.getInt(1), rs19.getString(2), rs19.getString(3), rs19.getInt(4)
-                                    ));
+                                    System.out.println("Delivery Partner ID         = " + rs19.getInt(1));
+                                    System.out.println("Firstname                   = " + rs19.getString(2));
+                                    System.out.println("Lastname                    = " + rs19.getString(3));
+                                    System.out.println("Total Deliveries Completed  = " + rs19.getInt(4)+"\n");
                                 }
 
                                 st19.close();
@@ -498,18 +506,18 @@ public class Main {
                                 ResultSet rs110 = st110.executeQuery();
 
                                 while (rs110.next()) {
-
-                                    System.out.println("Customer id =" + rs110.getString(1));
-                                    System.out.println("Firstname:" + rs110.getString(2));
-                                    System.out.println("Lastname:" + rs110.getString(3));
-                                    System.out.println("Date of Leaving :" + rs110.getTimestamp(4));
-                                    System.out.println(" ");
+                                    System.out.println("Customer ID      = " + rs110.getString(1));
+                                    System.out.println("Firstname        = " + rs110.getString(2));
+                                    System.out.println("Lastname         = " + rs110.getString(3));
+                                    System.out.println("Date of Leaving  = " + rs110.getTimestamp(4)+"\n");
                                 }
 
                                 st110.close();
 
                             } else if (opt == 11) {
                                 break;
+                            } else {
+                                System.out.println("\nInvalid Choice");
                             }
                         }
 
@@ -517,9 +525,9 @@ public class Main {
 
 
                 } else if (op == 2) {
-                    System.out.println("Enter your username");     //'dbagwell0', 'T7UbhttD'
+                    System.out.println("\nEnter your username");
                     String usrids = sc.nextLine();
-                    System.out.println("Enter your password");
+                    System.out.println("\nEnter your password");
                     String pwds = sc.nextLine();
 
                     String q2 = "Select * FROM Seller WHERE s_username=? AND s_password=?";
@@ -544,7 +552,7 @@ public class Main {
                         while (true) {
 
                             System.out.println("\nChoose one of the options");
-                            System.out.println("\n1) Update Stock"); // done
+                            System.out.println("\n1) Update Stock");
                             System.out.println("2) Back");
 
                             System.out.println("\nEnter your option");
@@ -552,11 +560,11 @@ public class Main {
                             sc.nextLine();
 
                             if (opt == 1) {
-                                System.out.println("Enter the product id ");
+                                System.out.println("\nEnter the product id ");
                                 int product_id_update = sc.nextInt();
                                 sc.nextLine();
 
-                                System.out.println("Enter the amount by which you want to increase the quantity");
+                                System.out.println("\nEnter the amount by which you want to increase the quantity");
                                 int stk = sc.nextInt();
                                 sc.nextLine();
 
@@ -569,23 +577,25 @@ public class Main {
                                 int rs21 = st21.executeUpdate();
 
                                 if (rs21 == 1) {
-                                    System.out.println("Stock added succesfully");
+                                    System.out.println("\nStock added succesfully");
                                 } else {
-                                    System.out.println("Encountered error while adding product");
+                                    System.out.println("\nEncountered error while adding product");
                                 }
 
                                 st21.close();
-                            }else if (opt==2){
+                            } else if (opt==2){
                                 break;
+                            } else {
+                                System.out.println("\nInvalid Choice");
                             }
                         }
                     }
 
                 } else if (op == 3) {
-                    System.out.println("Enter your username");    //'robey17', '6gTZMPZR4'
+                    System.out.println("\nEnter your username");
                     String usridc = sc.nextLine();
 
-                    System.out.println("Enter your password");
+                    System.out.println("\nEnter your password");
                     String pwdc = sc.nextLine();
 
                     String q3 = "Select * FROM Customer WHERE cus_username=? AND cus_password=?";
@@ -609,10 +619,10 @@ public class Main {
                         while (true) {
                             System.out.println("\nChoose one of the options");
                             System.out.println("\n1) Check wallet balance");
-                            System.out.println("2) Update wallet balance");     //TBD
+                            System.out.println("2) Update wallet balance");
                             System.out.println("3) View cart");
-                            System.out.println("4) Check Subscription");        //TBD
-                            System.out.println("5) Upgrade Subscription");      //TBD
+                            System.out.println("4) Check Subscription");
+                            System.out.println("5) Upgrade Subscription");
                             System.out.println("6) Delete Account");
                             System.out.println("7) Checkout");
                             System.out.println("8) Back");
@@ -631,7 +641,7 @@ public class Main {
                                 ResultSet rs31 = st31.executeQuery();
 
                                 while (rs31.next()) {
-                                    System.out.println(String.format("Wallet Balance =%d",
+                                    System.out.println(String.format("Wallet Balance = %d",
                                             rs31.getInt(13)
                                     ));
                                 }
@@ -647,7 +657,7 @@ public class Main {
                                 ResultSet rs33 = st33.executeQuery();
 
                                 while (rs33.next()) {
-                                    System.out.println(String.format("Product name = %s , Product cost = %d , product quantity = %d , total price =%d ",
+                                    System.out.println(String.format("\nProduct name = %s\nProduct cost = %d\nproduct quantity = %d\ntotal price = %d\n",
                                             rs33.getString(1), rs33.getInt(2), rs33.getInt(3), rs33.getInt(4)
                                     ));
                                 }
@@ -663,11 +673,11 @@ public class Main {
                                 int rs36 = st36.executeUpdate();
 
                                 if (rs36 == 1) {
-                                    System.out.println("Account deleted succesfully , Sorry if you have had a bad experience");
+                                    System.out.println("\nAccount deleted successfully, Sorry if you have had a bad experience");
                                     st36.close();
                                     break;
                                 } else {
-                                    System.out.println("Encountered error while deleting your account!!");
+                                    System.out.println("\nEncountered error while deleting your account!!");
                                 }
 
                                 st36.close();
@@ -985,17 +995,16 @@ public class Main {
                             } else if (opt == 8) {
                                 break;
                             } else {
-                                System.out.println("Invalid Choice!");
+                                System.out.println("\nInvalid Choice!");
                             }
                         }
                     }
 
                 } else if (op == 4) {
-                    System.out.println("Enter your username");    //'fbenziep', 'l4yBKhdUbdg' sample usernames   'abucher1g', 'CNZyMTnN'
+                    System.out.println("\nEnter your username");
                     String usriddp = sc.nextLine();
 
-                    //check with embedded sql
-                    System.out.println("Enter your password");
+                    System.out.println("\nEnter your password");
                     String pwddp = sc.nextLine();
 
                     String q4 = "Select dp_id FROM Delivery_Partner WHERE dp_username=? AND dp_password=?";
@@ -1018,10 +1027,10 @@ public class Main {
 
                     if (ans == 1) {
                         while (true) {
-                            System.out.println("Choose one of the options");
-                            System.out.println("\n1) Check Compensation");  // embedded sql
-                            System.out.println("2) Check orders to be delivered ");     //TBD
-                            System.out.println("3) Update orders list");                //TBD
+                            System.out.println("\nChoose one of the options");
+                            System.out.println("\n1) Check Compensation");
+                            System.out.println("2) Check orders to be delivered ");
+                            System.out.println("3) Update orders list");
                             System.out.println("4) Back");
 
                             System.out.println("\nEnter your option");
@@ -1046,6 +1055,8 @@ public class Main {
 
                             } else if (opt == 4) {
                                 break;
+                            } else {
+                                System.out.println("\nInvalid Choice");
                             }
                         }
                     }
@@ -1065,7 +1076,7 @@ public class Main {
                         double c_mobile;
                         int c_wallet;
 
-                        System.out.println("Enter Username       : ");
+                        System.out.println("\nEnter Username       : ");
                         cname = sc.nextLine();
 
                         System.out.println("\nEnter Password       : ");
@@ -1107,7 +1118,7 @@ public class Main {
                         int rs50 = st50.executeUpdate();
 
                         if (rs50 == 1) {
-                            System.out.println("\nNew Cart Added Successfully!");
+//                            System.out.println("\nNew Cart Added Successfully!");
                         } else {
                             throw new SQLException("Encountered unknown error while adding Cart");
                         }
@@ -1132,7 +1143,7 @@ public class Main {
                         int rs52 = st52.executeUpdate();
 
                         if (rs52 == 1) {
-                            System.out.println("\nNew Subscription Created Successfully!");
+//                            System.out.println("\nNew Subscription Created Successfully!");
                         } else {
                             throw new SQLException("Encountered unknown error while creating Subscription");
                         }
@@ -1192,7 +1203,7 @@ public class Main {
                         con.setAutoCommit(true);
                     }
 
-                } else if (op == 6) { // check trending categories
+                } else if (op == 6) {
 
                     String q6 = "SELECT p.p_name, COUNT(DISTINCT cpl.cp_cart_id) as cart_count " +
                             "FROM Product p " +
@@ -1206,14 +1217,14 @@ public class Main {
                     ResultSet rs6 = st6.executeQuery(q6);
 
                     while (rs6.next()) {
-                        System.out.println(String.format("Product name = %s ",
+                        System.out.println(String.format("Product name  =  %s ",
                                 rs6.getString(1)
                         ));
                     }
 
                     st6.close();
 
-                } else if (op == 7) { // check trending products
+                } else if (op == 7) {
 
                     String q7 = "SELECT Category.cat_name, " +
                             "SUM(cp_quantity) AS total_in_cart " +
@@ -1229,16 +1240,19 @@ public class Main {
                     ResultSet rs7 = st7.executeQuery(q7);
 
                     while (rs7.next()) {
-                        System.out.println(String.format("Category name = %s ",
+                        System.out.println(String.format("Category name  =  %s ",
                                 rs7.getString(1)
                         ));
                     }
 
                     st7.close();
 
-                }
-                else if(op==8){
+                } else if(op==8){
+
                     break;
+
+                } else {
+                    System.out.println("\nInvalid Choice");
                 }
             }
         } catch (Exception e){
