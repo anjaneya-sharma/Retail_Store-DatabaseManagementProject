@@ -1,5 +1,5 @@
 import java.sql.*;
-import java.util.*;    // embedded sql query , document preparation
+import java.util.*;
 
 import static java.sql.Types.NULL;
 
@@ -30,9 +30,10 @@ public class Main {
                 System.out.println("2) Seller Login");
                 System.out.println("3) Customer Login");
                 System.out.println("4) Delivery Partner Login");
-                System.out.println("5) Customer Signup");
+                System.out.println("5) Customer Signup");                   // TBD
                 System.out.println("6) Check Trending Categories");
                 System.out.println("7) Check Trending Products");
+                System.out.println("8) Exit");
 
                 System.out.println("\nSelect one of the options");
 
@@ -42,7 +43,7 @@ public class Main {
                 sc.nextLine();
 
                 if (op == 1) {
-                    System.out.println("Enter your user id");
+                    System.out.println("Enter your username");
                     String usrida = sc.nextLine();                     // (14, 'aruded', 'kncbFp');
 
                     System.out.println("Enter your password");
@@ -65,18 +66,19 @@ public class Main {
 
                     st1.close();
 
+
                     if (ans == 1) {
                         while (true) {
                             System.out.println("\nChoose one of the options");
-                            System.out.println("\n1)  Add a Delivery Partner");
-                            System.out.println("2)  Remove a Delivery Partner");
-                            System.out.println("3)  Add a Seller");
-                            System.out.println("4)  Remove a Seller");
-                            System.out.println("5)  Remove a Customer");  // embedded sql     TBDDDD
-                            System.out.println("6)  View Customer Details");   // done
-                            System.out.println("7)  View Delivery Partner Details");   // done
-                            System.out.println("8)  [OLAP] View Customers with most money spent");
-                            System.out.println("9)  [OLAP] View Delivery Partner with most number of orders delivered");
+                            System.out.println("\n1)  Add a Delivery Partner");         //done
+                            System.out.println("2)  Remove a Delivery Partner");        //done
+                            System.out.println("3)  Add a Seller");                     //done
+                            System.out.println("4)  Remove a Seller");                  //done
+                            System.out.println("5)  Remove a Customer");                //done
+                            System.out.println("6)  View Customer Details");            //done
+                            System.out.println("7)  View Delivery Partner Details");    //done
+                            System.out.println("8)  [OLAP] View Customers with most money spent");      //done
+                            System.out.println("9)  [OLAP] View Delivery Partner with most number of orders delivered");        //done
                             System.out.println("10) Show Customer History");
                             System.out.println("11) Back");
 
@@ -416,7 +418,7 @@ public class Main {
                                 st16.close();
 
                             } else if (opt == 7) {
-                                String q17 = "Select * Delivery_Partner WHERE dp_id=?";
+                                String q17 = "Select *  FROM Delivery_Partner WHERE dp_id=?";
                                 PreparedStatement st17 = con.prepareStatement(q17);
 
                                 System.out.println("Enter the delivery partner id");
@@ -424,8 +426,6 @@ public class Main {
                                 sc.nextLine();
 
                                 st17.setInt(1, dpid);
-
-                                ResultSet rs16 = st17.executeQuery();
 
                                 ResultSet rs17 = st17.executeQuery();
 
@@ -484,7 +484,7 @@ public class Main {
                                 ResultSet rs19 = st19.executeQuery();
 
                                 while (rs19.next()) {
-                                    System.out.println(String.format("Delivery Partner ID = %d , Firstname = %s , Lastname = %s ,                                                                 Total Deliveries Completed =%d ",
+                                    System.out.println(String.format("Delivery Partner ID = %d , Firstname = %s , Lastname = %s ,Total Deliveries Completed =%d ",
                                             rs19.getInt(1), rs19.getString(2), rs19.getString(3), rs19.getInt(4)
                                     ));
                                 }
@@ -498,6 +498,7 @@ public class Main {
                                 ResultSet rs110 = st110.executeQuery();
 
                                 while (rs110.next()) {
+
                                     System.out.println("Customer id =" + rs110.getString(1));
                                     System.out.println("Firstname:" + rs110.getString(2));
                                     System.out.println("Lastname:" + rs110.getString(3));
@@ -516,7 +517,7 @@ public class Main {
 
 
                 } else if (op == 2) {
-                    System.out.println("Enter your user id");     //'dbagwell0', 'T7UbhttD'
+                    System.out.println("Enter your username");     //'dbagwell0', 'T7UbhttD'
                     String usrids = sc.nextLine();
                     System.out.println("Enter your password");
                     String pwds = sc.nextLine();
@@ -581,7 +582,7 @@ public class Main {
                     }
 
                 } else if (op == 3) {
-                    System.out.println("Enter your user id");    //'robey17', '6gTZMPZR4'  , 'eciccottoy', 'TizaC3Ze'
+                    System.out.println("Enter your username");    //'robey17', '6gTZMPZR4'
                     String usridc = sc.nextLine();
 
                     System.out.println("Enter your password");
@@ -607,14 +608,14 @@ public class Main {
                     if (ans == 1) {
                         while (true) {
                             System.out.println("\nChoose one of the options");
-                            System.out.println("\n1) Check wallet balance");   // embedded sql SELECT cus_wallet FROM Customer WHERE cus_id=?
-                            System.out.println("2) Update wallet balance");
-                            System.out.println("3) View cart");  // done
-                            System.out.println("4) Check Subscription");
-                            System.out.println("5) Upgrade Subscription");
-                            System.out.println("6) Delete Account");  // embedded sql DELETE FROM Customer WHERE cus_id=? ( using trigger , entries to be added to history table)
+                            System.out.println("\n1) Check wallet balance");
+                            System.out.println("2) Update wallet balance");     //TBD
+                            System.out.println("3) View cart");
+                            System.out.println("4) Check Subscription");        //TBD
+                            System.out.println("5) Upgrade Subscription");      //TBD
+                            System.out.println("6) Delete Account");
                             System.out.println("7) Checkout");
-                            System.out.println("8) Back"); //done
+                            System.out.println("8) Back");
 
 
                             System.out.println("\nEnter your option");
@@ -624,10 +625,6 @@ public class Main {
                             if (opt == 1) {
                                 String q31 = "Select * FROM Customer WHERE cus_username=?";
                                 PreparedStatement st31 = con.prepareStatement(q31);
-
-                                // System.out.println("Enter the customer id");
-                                // int cid=sc.nextInt();
-                                // sc.nextLine();
 
                                 st31.setString(1, usridc);
 
@@ -645,10 +642,6 @@ public class Main {
                                 String q33 = "SELECT P.p_name,P.p_cost,CP.cp_quantity,CP.cp_price FROM Product as P , Cart_Product_List as CP , Customer as C WHERE P.p_id=CP.cp_pid AND CP.cp_cart_id=C.cus_cart_id AND C.cus_username=?;";
                                 PreparedStatement st33 = con.prepareStatement(q33);
 
-                                // System.out.println("Enter the customer id");
-                                // int cid=sc.nextInt();
-                                // sc.nextLine();
-
                                 st33.setString(1, usridc);
 
                                 ResultSet rs33 = st33.executeQuery();
@@ -665,18 +658,12 @@ public class Main {
                                 String q36 = "DELETE FROM Customer WHERE cus_username=?";
                                 PreparedStatement st36 = con.prepareStatement(q36);
 
-//                            System.out.println("Enter the customer id");
-//                            int cid=sc.nextInt();
-//                            sc.nextLine();
-
                                 st36.setString(1, usridc);
-
-                                // ResultSet rs15    = st15.executeQuery();
 
                                 int rs36 = st36.executeUpdate();
 
                                 if (rs36 == 1) {
-                                    System.out.println("Account deleted  succesfully , Sorry if you have had a bad experience");
+                                    System.out.println("Account deleted succesfully , Sorry if you have had a bad experience");
                                     st36.close();
                                     break;
                                 } else {
@@ -687,68 +674,146 @@ public class Main {
 
                             } else if (opt == 7) {
 
-                                int balance = 0;
-                                String q370 = "Select cus_wallet FROM Customer WHERE cus_username= ? ";
-                                PreparedStatement st370 = con.prepareStatement(q370);
+                                try {
+                                    con.setAutoCommit(false);
 
-                                st370.setString(1, usridc);
+                                    String q371 = "SELECT cp_pid,cp_quantity FROM Cart_Product_List" +
+                                                  " WHERE cp_cart_id = (SELECT cus_cart_id FROM Customers" +
+                                                  " WHERE cus_username=?)";
 
-                                ResultSet rs370 = st370.executeQuery();
+                                    PreparedStatement st371 = con.prepareStatement(q371);
 
-                                while (rs370.next()) {
-                                    balance=rs370.getInt(1);
-                                }
+                                    st371.setString(1, usridc);
 
-                                st370.close();
+                                    ResultSet rs371 = st371.executeQuery();
 
-                                String q371 = "SELECT cp_pid,cp_quantity FROM Cart_Product_List where cp_cart_id = (SELECT cus_cart_id FROM Customers WHERE cus_username=?)";
-                                PreparedStatement st371 = con.prepareStatement(q371);
+                                    while (rs371.next()) {
+                                        String q372 = "SELECT p_stock FROM Products where p_id = ?";
+                                        PreparedStatement st372 = con.prepareStatement(q372);
 
-                                st371.setString(1,usridc);
+                                        st372.setInt(1, rs371.getInt(1));
+                                        ResultSet rs372 = st372.executeQuery();
 
-                                ResultSet rs371 = st371.executeQuery();
-
-                                int ans2 = 0;
-                                while( rs371.next() ){
-                                    String q372 = "SELECT p_stock FROM Products where p_id = ?";
-                                    PreparedStatement st372 = con.prepareStatement(q372);
-
-                                    st372.setInt(1,rs371.getInt(1));
-                                    ResultSet rs372 = st372.executeQuery();
-
-                                    if (rs372.getInt(1) < rs371.getInt(2)){
-                                        System.out.println(" One or More Product is out of stock! View cart to know more ");
-                                        ans2 = 1;
-                                        break;
+                                        if (rs372.getInt(1) < rs371.getInt(2)) {
+                                            st372.close();
+                                            throw new SQLException("One or More Product is out of stock! View cart to know more");
+                                        }
+                                        st372.close();
                                     }
-                                    st372.close();
+                                    st371.close();
+
+                                    int balance = 0;
+                                    String q370 = "Select cus_wallet FROM Customer WHERE cus_username= ? ";
+                                    PreparedStatement st370 = con.prepareStatement(q370);
+
+                                    st370.setString(1, usridc);
+
+                                    ResultSet rs370 = st370.executeQuery();
+
+                                    if (rs370.next()) {
+                                        balance = rs370.getInt(1);
+                                    }
+
+                                    st370.close();
+
+                                    String q373 = "SELECT total_price FROM Cart WHERE cart_id = " +
+                                                  "(SELECT cus_cart_id FROM Customers WHERE cus_username=?)";
+
+                                    PreparedStatement st373 = con.prepareStatement(q373);
+
+                                    st373.setString(1, usridc);
+
+                                    ResultSet rs373 = st373.executeQuery();
+
+                                    if (rs373.getInt(1) > balance) {
+                                        st373.close();
+                                        throw new SQLException("You are " + (balance - rs373.getInt(1)) + " INR short! Remove Items from Cart or Add more Credits to continue");
+                                    }
+                                    st373.close();
+
+                                    String o_d_stat         = "ordered";
+                                    int o_dp_id             = 0;
+                                    int o_cus_id            = 0;
+                                    String o_cus_firstname  = "";
+                                    String o_cus_lastname   = "";
+                                    Double o_cus_mobile     = 0.0 ;
+                                    String o_cus_email      = "";
+                                    String o_cus_street     = "";
+                                    String o_cus_city       = "";
+                                    String o_cus_pin_code   = "";
+
+                                    String q374 = "SELECT cus_id, cus_firstname, cus_lastname, cus_mobile," +
+                                                  " cus_email, cus_street, cus_city, cus_pin_code FROM Customer" +
+                                                  " WHERE cus_username=?";
+
+                                    PreparedStatement st374 = con.prepareStatement(q374);
+
+                                    st374.setString(1, usridc);
+
+                                    ResultSet rs374 = st374.executeQuery();
+
+                                    if(rs374.next()){
+                                        o_cus_id        = rs374.getInt(1);
+                                        o_cus_firstname = rs374.getString(2);
+                                        o_cus_lastname  = rs374.getString(3);
+                                        o_cus_mobile    = rs374.getDouble(4);
+                                        o_cus_email     = rs374.getString(5);
+                                        o_cus_street    = rs374.getString(6);
+                                        o_cus_city      = rs374.getString(7);
+                                        o_cus_pin_code  = rs374.getString(8);
+                                    }
+                                    st374.close();
+
+                                    String q375 = "SELECT COUNT(*) FROM Delivery_Partner";
+                                    PreparedStatement st375 = con.prepareStatement(q375);
+
+                                    ResultSet rs375 = st375.executeQuery();
+
+                                    int mod=0;
+                                    if(rs374.next()){
+                                        mod = rs374.getInt(1);
+                                    }
+
+                                    o_dp_id = o_cus_id%mod +1;
+
+                                    String q376 = "INSERT INTO _Order (order_delivery_status, order_cus_id," +
+                                                  " order_dp_id, order_date, order_ship_date, order_cus_firstname," +
+                                                  " order_cus_lastname, order_cus_mobile, order_cus_email," +
+                                                  " order_cus_street, order_cus_city, order_cus_pin_code)" +
+                                                  " VALUES (?, ?, ?, CURRENT_DATE(), DATE_ADD(CURRENT_DATE()," +
+                                                  " INTERVAL FLOOR(RAND() * 2) + 4 DAY),?, ?, ?, ?, ?, ?, ?)";
+
+                                    PreparedStatement st376 = con.prepareStatement(q376);
+
+                                    st376.setString(1,o_d_stat);
+                                    st376.setInt(2,o_cus_id);
+                                    st376.setInt(3,o_dp_id);
+                                    st376.setString(4,o_cus_firstname);
+                                    st376.setString(5,o_cus_lastname);
+                                    st376.setDouble(6,o_cus_mobile);
+                                    st376.setString(7,o_cus_email);
+                                    st376.setString(8,o_cus_street);
+                                    st376.setString(9,o_cus_city);
+                                    st376.setString(10,o_cus_pin_code);
+
+
+                                } catch (SQLException e){
+                                    System.out.println(e.getMessage());
+                                    con.rollback();
+                                } finally {
+                                    con.setAutoCommit(true);
                                 }
-                                st371.close();
 
-                                if(ans2==1){
-                                    continue;
-                                }
-
-                                String q373 = "SELECT total_price FROM Cart WHERE cart_id = (SELECT cus_cart_id FROM Customers WHERE cus_username=?)";
-                                PreparedStatement st373 = con.prepareStatement(q373);
-
-                                st373.setString(1,usridc);
-
-                                ResultSet rs373 = st373.executeQuery();
-
-                                if ( rs373.getInt(1) > balance ){
-                                    System.out.println("You are "+ (balance - rs373.getInt(1)) +" INR short!");
-                                    continue;
-                                }
-
-                        } else if (opt == 8) {
+                            } else if (opt == 8) {
                                 break;
+                            } else {
+                                System.out.println("Invalid Choice!");
                             }
                         }
                     }
 
                 } else if (op == 4) {
-                    System.out.println("Enter your user id");    //'fbenziep', 'l4yBKhdUbdg'
+                    System.out.println("Enter your username");    //'fbenziep', 'l4yBKhdUbdg' sample usernames   'abucher1g', 'CNZyMTnN'
                     String usriddp = sc.nextLine();
 
                     //check with embedded sql
@@ -763,12 +828,11 @@ public class Main {
                     int ans = -1;
 
                     ResultSet rs4 = st4.executeQuery();
-//                int dpID;
 
                     while (rs4.next()) {
                         if (rs4.getInt(1) != NULL) {
                             ans = 1;
-                            //dpID=rs.getInt(1);
+
                         }
                     }
 
@@ -778,8 +842,8 @@ public class Main {
                         while (true) {
                             System.out.println("Choose one of the options");
                             System.out.println("\n1) Check Compensation");  // embedded sql
-                            System.out.println("2) Check orders to be delivered ");
-                            System.out.println("3) Update orders list");
+                            System.out.println("2) Check orders to be delivered ");     //TBD
+                            System.out.println("3) Update orders list");                //TBD
                             System.out.println("4) Back");
 
                             System.out.println("\nEnter your option");
@@ -811,146 +875,144 @@ public class Main {
 
                 } else if (op == 5) {
 
-                    String cname;
-                    String cpass;
-                    String c_firstname;
-                    String c_lastname;
-                    String c_email;
-                    String c_street;
-                    String c_city;
-                    String c_pincode;
-                    double c_mobile;
-                    int    c_wallet;
-
-                    System.out.println("Enter Username       : ");
-                    cname = sc.nextLine();
-
-                    System.out.println("\nEnter Password       : ");
-                    cpass = sc.nextLine();
-
-                    System.out.println("\nEnter First Name     : ");
-                    c_firstname = sc.nextLine();
-
-                    System.out.println("\nEnter Last Name      : ");
-                    c_lastname = sc.nextLine();
-
-                    System.out.println("\nEnter Mobile No.     : ");
-                    c_mobile = sc.nextDouble();
-
-                    System.out.println("\nEnter E mail         : ");
-                    c_email = sc.nextLine();
-
-                    sc.nextLine();
-
-                    System.out.println("\nEnter Street         : ");
-                    c_street = sc.nextLine();
-
-                    System.out.println("\nEnter City           : ");
-                    c_city = sc.nextLine();
-
-                    System.out.println("\nEnter Pin Code       : ");
-                    c_pincode = sc.nextLine();
-
-                    System.out.println("\nEnter Wallet Balance : ");
-                    c_wallet = sc.nextInt();
-
-                    sc.nextLine();
-
-
-                    con.setAutoCommit(false);
-                    String q50 = "INSERT INTO Cart (total_price) VALUES (0)";
-
-                    PreparedStatement st50 = con.prepareStatement(q50);
-                    int rs50 = st50.executeUpdate();
-
-                    if (rs50 == 1) {
-                        System.out.println("\nNew Cart Added Successfully!");
-                    } else {
-                        System.out.println("\nEncountered unknown error while adding a new cart!");
-                        con.rollback();
-                        break;
-                    }
-                    st50.close();
-
-                    String q51 = "SELECT LAST_INSERT_ID()";
-
-                    PreparedStatement st51 = con.prepareStatement(q51);
-
-                    ResultSet rs51 = st51.executeQuery();
-                    int c_cart_id = -999;
-
-                    if(rs51.next()){
-                        c_cart_id = rs51.getInt(1);
-                    }
-
-                    st51.close();
-
-                    String q52 = "INSERT INTO Subscription (sub_name) VALUES ('silver')";
-
-                    PreparedStatement st52 = con.prepareStatement(q52);
-                    int rs52 = st52.executeUpdate();
-
-                    if (rs52 == 1) {
-                        System.out.println("\nNew Subscription Created Successfully!");
-                    } else {
-                        System.out.println("\nEncountered unknown error while creating a new subscription!");
-                        con.rollback();
-                        break;
-                    }
-                    st52.close();
-
-                    String q53 = "SELECT LAST_INSERT_ID()";
-
-                    PreparedStatement st53 = con.prepareStatement(q53);
-
-                    ResultSet rs53 = st53.executeQuery();
-
-                    int c_sub_id = -999;
-
-                    if(rs53.next()){
-                        c_sub_id = rs53.getInt(1);
-                    }
-
-                    st53.close();
-
-                    String q5 = "INSERT INTO Customer (cus_username,cus_password," +
-                            "cus_firstname,cus_lastname,cus_mobile,cus_email,cus_street," +
-                            "cus_city,cus_pin_code,cus_cart_id,cus_sub_id,cus_wallet) "+
-                            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-
-                    PreparedStatement st5 = con.prepareStatement(q5);
-
-                    st5.setString(1, cname);
-                    st5.setString(2, cpass);
-                    st5.setString(3, c_firstname);
-                    st5.setString(4, c_lastname);
-                    st5.setDouble(5, c_mobile);
-                    st5.setString(6, c_email);
-                    st5.setString(7, c_street);
-                    st5.setString(8, c_city);
-                    st5.setString(9, c_pincode);
-                    st5.setInt(10, c_cart_id);
-                    st5.setInt(11, c_sub_id);
-                    st5.setInt(12, c_wallet);
-
-                    int rs5;
-
                     try {
+                        String cname;
+                        String cpass;
+                        String c_firstname;
+                        String c_lastname;
+                        String c_email;
+                        String c_street;
+                        String c_city;
+                        String c_pincode;
+                        double c_mobile;
+                        int c_wallet;
+
+                        System.out.println("Enter Username       : ");
+                        cname = sc.nextLine();
+
+                        System.out.println("\nEnter Password       : ");
+                        cpass = sc.nextLine();
+
+                        System.out.println("\nEnter First Name     : ");
+                        c_firstname = sc.nextLine();
+
+                        System.out.println("\nEnter Last Name      : ");
+                        c_lastname = sc.nextLine();
+
+                        System.out.println("\nEnter Mobile No.     : ");
+                        c_mobile = sc.nextDouble();
+
+                        System.out.println("\nEnter E mail         : ");
+                        c_email = sc.nextLine();
+
+                        sc.nextLine();
+
+                        System.out.println("\nEnter Street         : ");
+                        c_street = sc.nextLine();
+
+                        System.out.println("\nEnter City           : ");
+                        c_city = sc.nextLine();
+
+                        System.out.println("\nEnter Pin Code       : ");
+                        c_pincode = sc.nextLine();
+
+                        System.out.println("\nEnter Wallet Balance : ");
+                        c_wallet = sc.nextInt();
+
+                        sc.nextLine();
+
+
+                        con.setAutoCommit(false);
+                        String q50 = "INSERT INTO Cart (total_price) VALUES (0)";
+
+                        PreparedStatement st50 = con.prepareStatement(q50);
+                        int rs50 = st50.executeUpdate();
+
+                        if (rs50 == 1) {
+                            System.out.println("\nNew Cart Added Successfully!");
+                        } else {
+                            throw new SQLException("Encountered unknown error while adding Cart");
+                        }
+                        st50.close();
+
+                        String q51 = "SELECT LAST_INSERT_ID()";
+
+                        PreparedStatement st51 = con.prepareStatement(q51);
+
+                        ResultSet rs51 = st51.executeQuery();
+                        int c_cart_id = -999;
+
+                        if (rs51.next()) {
+                            c_cart_id = rs51.getInt(1);
+                        }
+
+                        st51.close();
+
+                        String q52 = "INSERT INTO Subscription (sub_name) VALUES ('silver')";
+
+                        PreparedStatement st52 = con.prepareStatement(q52);
+                        int rs52 = st52.executeUpdate();
+
+                        if (rs52 == 1) {
+                            System.out.println("\nNew Subscription Created Successfully!");
+                        } else {
+                            throw new SQLException("Encountered unknown error while creating Subscription");
+                        }
+                        st52.close();
+
+                        String q53 = "SELECT LAST_INSERT_ID()";
+
+                        PreparedStatement st53 = con.prepareStatement(q53);
+
+                        ResultSet rs53 = st53.executeQuery();
+
+                        int c_sub_id = -999;
+
+                        if (rs53.next()) {
+                            c_sub_id = rs53.getInt(1);
+                        }
+
+                        st53.close();
+
+                        String q5 = "INSERT INTO Customer (cus_username,cus_password," +
+                                "cus_firstname,cus_lastname,cus_mobile,cus_email,cus_street," +
+                                "cus_city,cus_pin_code,cus_cart_id,cus_sub_id,cus_wallet) " +
+                                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+
+                        PreparedStatement st5 = con.prepareStatement(q5);
+
+                        st5.setString(1, cname);
+                        st5.setString(2, cpass);
+                        st5.setString(3, c_firstname);
+                        st5.setString(4, c_lastname);
+                        st5.setDouble(5, c_mobile);
+                        st5.setString(6, c_email);
+                        st5.setString(7, c_street);
+                        st5.setString(8, c_city);
+                        st5.setString(9, c_pincode);
+                        st5.setInt(10, c_cart_id);
+                        st5.setInt(11, c_sub_id);
+                        st5.setInt(12, c_wallet);
+
+                        int rs5;
+
                         rs5 = st5.executeUpdate();
                         if (rs5 == 1) {
                             System.out.println("\nCustomer Added Successfully");
                             con.commit();
                         } else {
-                            System.out.println("\nEncountered unknown error while adding Customer");
-                            con.rollback();
+                            throw new SQLException("Encountered unknown error while adding Customer");
                         }
+                        st5.close();
                     } catch (SQLIntegrityConstraintViolationException e) {
-                        System.out.println("\nCustomer with username " + cname + " already exists.");
+                        System.out.println("\nUsername is already taken.");
+                        con.rollback();
+                    } catch (SQLException e){
+                        System.out.println(e.getMessage());
                         con.rollback();
                     } finally {
                         con.setAutoCommit(true);
                     }
-                    st5.close();
 
                 } else if (op == 6) { // check trending categories
 
@@ -996,6 +1058,9 @@ public class Main {
 
                     st7.close();
 
+                }
+                else if(op==8){
+                    break;
                 }
             }
         } catch (Exception e){
