@@ -678,7 +678,7 @@ public class Main {
                                     con.setAutoCommit(false);
 
                                     String q371 = "SELECT cp_pid,cp_quantity FROM Cart_Product_List" +
-                                                  " WHERE cp_cart_id = (SELECT cus_cart_id FROM Customers" +
+                                                  " WHERE cp_cart_id = (SELECT cus_cart_id FROM Customer" +
                                                   " WHERE cus_username=?)";
 
                                     PreparedStatement st371 = con.prepareStatement(q371);
@@ -688,15 +688,17 @@ public class Main {
                                     ResultSet rs371 = st371.executeQuery();
 
                                     while (rs371.next()) {
-                                        String q372 = "SELECT p_stock FROM Products where p_id = ?";
+                                        String q372 = "SELECT p_stock FROM Product where p_id = ?";
                                         PreparedStatement st372 = con.prepareStatement(q372);
 
                                         st372.setInt(1, rs371.getInt(1));
                                         ResultSet rs372 = st372.executeQuery();
 
-                                        if (rs372.getInt(1) < rs371.getInt(2)) {
-                                            st372.close();
-                                            throw new SQLException("One or More Product is out of stock! View cart to know more");
+                                        if (rs372.next()) {
+                                            if (rs372.getInt(1) < rs371.getInt(2)) {
+                                                st372.close();
+                                                throw new SQLException("One or More Product is out of stock! View cart to know more");
+                                            }
                                         }
                                         st372.close();
                                     }
@@ -717,7 +719,7 @@ public class Main {
                                     st370.close();
 
                                     String q373 = "SELECT total_price FROM Cart WHERE cart_id = " +
-                                                  "(SELECT cus_cart_id FROM Customers WHERE cus_username=?)";
+                                                  "(SELECT cus_cart_id FROM Customer WHERE cus_username=?)";
 
                                     PreparedStatement st373 = con.prepareStatement(q373);
 
@@ -725,9 +727,14 @@ public class Main {
 
                                     ResultSet rs373 = st373.executeQuery();
 
-                                    if (rs373.getInt(1) > balance) {
+                                    int o_price = 0;
+                                    if( rs373.next() ){
+                                        o_price = rs373.getInt(1);
+                                    }
+
+                                    if ( o_price > balance) {
                                         st373.close();
-                                        throw new SQLException("You are " + (balance - rs373.getInt(1)) + " INR short! Remove Items from Cart or Add more Credits to continue");
+                                        throw new SQLException("You are " + (balance - o_price) + " INR short! Remove Items from Cart or Add more Credits to continue");
                                     }
                                     st373.close();
 
@@ -770,8 +777,8 @@ public class Main {
                                     ResultSet rs375 = st375.executeQuery();
 
                                     int mod=0;
-                                    if(rs374.next()){
-                                        mod = rs374.getInt(1);
+                                    if(rs375.next()){
+                                        mod = rs375.getInt(1);
                                     }
 
                                     o_dp_id = o_cus_id%mod +1;
@@ -796,6 +803,108 @@ public class Main {
                                     st376.setString(9,o_cus_city);
                                     st376.setString(10,o_cus_pin_code);
 
+                                    int rs376 = st376.executeUpdate();
+
+                                    if (rs376 == 1){
+                                        System.out.println("Order Assembled Successfully!");
+                                    } else {
+                                        st376.close();
+                                        throw new SQLException("Encountered unknown error while assembling Order");
+                                    }
+                                    st376.close();
+
+
+                                    String q377 = "SELECT LAST_INSERT_ID()";
+                                    PreparedStatement st377 = con.prepareStatement(q377);
+
+                                    ResultSet rs377 = st377.executeQuery();
+                                    int o_id = -999;
+
+                                    if(rs377.next()){
+                                        o_id = rs377.getInt(1);
+                                    }
+                                    st377.close();
+
+                                    String q378 = "SELECT cus_cart_id FROM Customer WHERE cus_id=?";
+                                    PreparedStatement st378 = con.prepareStatement(q378);
+
+                                    st378.setInt(1,o_cus_id);
+                                    ResultSet rs378 = st378.executeQuery();
+                                    int o_cart_id = -999;
+
+                                    if(rs378.next()){
+                                        o_cart_id = rs378.getInt(1);
+                                    }
+
+                                    String q379 = "INSERT INTO Places (pl_cus_id, pl_order_id, pl_cart_id)" +
+                                                  " VALUES (?,?,?)";
+
+                                    PreparedStatement st379 = con.prepareStatement(q379);
+                                    st379.setInt(1,o_cus_id);
+                                    st379.setInt(2,o_id);
+                                    st379.setInt(3,o_cart_id);
+
+                                    int rs379 = st379.executeUpdate();
+                                    if( rs379 == 1 ){
+                                        System.out.println("Order Placed Successfully");
+                                    }else{
+                                        st379.close();
+                                        throw new SQLException("Encountered unknown error while placing Order");
+                                    }
+                                    st379.close();
+
+
+                                    String q3710 = "INSERT INTO Payment (pt_amount, pt_date_time)" +
+                                                   " VALUES (?,CURRENT_DATE())";
+
+                                    PreparedStatement st3710 = con.prepareStatement(q3710);
+
+                                    st3710.setInt(1,o_price);
+
+                                    int rs3710 = st3710.executeUpdate();
+
+                                    if (rs3710 == 1){
+                                        System.out.println("Payment done Successfully!");
+                                    } else {
+                                        st3710.close();
+                                        throw new SQLException("Encountered unknown error during Payment.");
+                                    }
+                                    st3710.close();
+
+                                    String q3711 = "SELECT LAST_INSERT_ID()";
+                                    PreparedStatement st3711 = con.prepareStatement(q3711);
+
+                                    ResultSet rs3711 = st3711.executeQuery();
+                                    int pt_id = -999;
+
+                                    if(rs3711.next()){
+                                        pt_id = rs3711.getInt(1);
+                                    }
+                                    st3711.close();
+
+                                    String q3712 = "INSERT INTO Pays (pys_pt_id, pys_cus_id, pys_order_id)" +
+                                                   " VALUES (?,?,?)";
+
+                                    PreparedStatement st3712 = con.prepareStatement(q3712);
+                                    st3712.setInt(1,pt_id);
+                                    st3712.setInt(2,o_cus_id);
+                                    st3712.setInt(3,o_id);
+
+                                    int rs3712 = st3712.executeUpdate();
+                                    if( rs3712 == 1 ){
+                                        System.out.println("Payment processed Successfully");
+                                    }else{
+                                        st3712.close();
+                                        throw new SQLException("Encountered unknown error while processing Payment");
+                                    }
+                                    st3712.close();
+
+                                    String q3713 = "DELETE FROM Cart_Product_List WHERE cp_cart_id = ?";
+                                    PreparedStatement st3713 = con.prepareStatement(q3713);
+
+                                    st3713.setInt(1,o_cart_id);
+                                    
+                                    con.commit();
 
                                 } catch (SQLException e){
                                     System.out.println(e.getMessage());
