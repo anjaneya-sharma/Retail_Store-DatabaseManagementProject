@@ -670,21 +670,6 @@ public class Main {
                                     System.out.println("ERROR encountered in updating the balance");
                                 }
 
-                            } else if (opt == 4) { // check current subscription
-                                String subs = "";
-                                String q34 = "SELECT * FROM Subscription WHERE sub_id=(SELECT cus_sub_id FROM Customer WHERE cus_username=?)";
-                                PreparedStatement st34 = con.prepareStatement(q34);
-
-                                st34.setString(1, usridc);
-
-                                ResultSet rs34 = st34.executeQuery();
-
-                                while (rs34.next()) {
-                                    subs = rs34.getString(2);
-                                }
-
-                                System.out.println("Your subscription is " + subs);
-
                             } else if (opt == 3) {
                                 String q33 = "SELECT P.p_id,P.p_name,P.p_cost,CP.cp_quantity,CP.cp_price FROM Product as P , Cart_Product_List as CP , Customer as C WHERE P.p_id=CP.cp_pid AND CP.cp_cart_id=C.cus_cart_id AND C.cus_username=?;";
                                 PreparedStatement st33 = con.prepareStatement(q33);
@@ -705,6 +690,21 @@ public class Main {
                                 System.out.println("\nNet Total           = " + price + "\n");
 
                                 st33.close();
+
+                            } else if (opt == 4) { // check current subscription
+                                String subs = "";
+                                String q34 = "SELECT * FROM Subscription WHERE sub_id=(SELECT cus_sub_id FROM Customer WHERE cus_username=?)";
+                                PreparedStatement st34 = con.prepareStatement(q34);
+
+                                st34.setString(1, usridc);
+
+                                ResultSet rs34 = st34.executeQuery();
+
+                                while (rs34.next()) {
+                                    subs = rs34.getString(2);
+                                }
+
+                                System.out.println("Your subscription is " + subs);
 
                             } else if (opt == 5) { // upgrade subscription
                                 String current_subs = "";
