@@ -987,24 +987,11 @@ public class Main {
                                 prod_id=sc.nextInt();
                                 sc.nextLine();
 
-                                String q380 = "Select * FROM Cart_Product_List WHERE cp_pid=?";
-                                PreparedStatement st380 = con.prepareStatement(q380);
-
-                                st380.setInt(1,prod_id );
-
-                                ResultSet rs380 = st380.executeQuery();
-
-                                while (rs380.next()) {
-                                    pric=rs380.getInt(3);
-                                    quantt=rs380.getInt(2);
-                                }
-                                st380.close();
-
                                 //price fetched , now update cart
 
                                 int cart_id=0;
 
-                                String q382 = "Select * FROM Customer WHERE cus_username=?";
+                                String q382 = "Select cus_cart_id FROM Customer WHERE cus_username=?";
                                 PreparedStatement st382 = con.prepareStatement(q382);
 
                                 st382.setString(1,usridc );
@@ -1012,15 +999,28 @@ public class Main {
                                 ResultSet rs382 = st382.executeQuery();
 
                                 while (rs382.next()) {
-                                    cart_id=rs382.getInt(10);
+                                    cart_id=rs382.getInt(1);
                                 }
                                 st382.close();
 
+                                String q380 = "Select * FROM Cart_Product_List WHERE cp_pid=? and cp_cart_id=?";
+                                PreparedStatement st380 = con.prepareStatement(q380);
 
-                                String q381 = "UPDATE Cart SET total_price = total_price - ?  WHERE cart_id=?";
+                                st380.setInt(1,prod_id );
+                                st380.setInt(2,cart_id);
+
+                                ResultSet rs380 = st380.executeQuery();
+
+                                while (rs380.next()) {
+                                    pric=rs380.getInt(4);
+                                    quantt=rs380.getInt(2);
+                                }
+                                st380.close();
+
+                                String q381 = "UPDATE Cart SET total_price= total_price - ? WHERE cart_id=?";
                                 PreparedStatement st381 = con.prepareStatement(q381);
 
-                                st381.setInt(1,pric*quantt );
+                                st381.setInt(1,pric );
                                 st381.setInt(2,cart_id );
 
                                 int rs381 = st381.executeUpdate();
@@ -1074,7 +1074,6 @@ public class Main {
                                     st3_10_0.setString(1, usridc);
                                     ResultSet rs3_10_0 = st3_10_0.executeQuery();
 
-                                    int ans2=0;
                                     if( rs3_10_0.next() ){
                                         st3_10_0.close();
                                     }else{
@@ -1163,6 +1162,7 @@ public class Main {
 
                                     if ( o_price > balance) {
                                         st3_10_4.close();
+                                        System.out.println("balance -> "+balance+" o_price -> "+o_price);
                                         throw new SQLException("You are " + ( o_price - balance ) + " INR short! Remove Items from Cart or Add more Credits to continue");
                                     }
                                     st3_10_4.close();
