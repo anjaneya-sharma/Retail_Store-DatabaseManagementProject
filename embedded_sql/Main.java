@@ -674,7 +674,7 @@ public class Main {
 
                             } else if (opt == 6) {
 
-                                while(true) {
+                                while (true) {
                                     String q360 = "SELECT cat_id, cat_name FROM Category";
                                     PreparedStatement st360 = con.prepareStatement(q360);
 
@@ -691,17 +691,17 @@ public class Main {
 
                                     cat_id = sc.nextInt();
 
-                                    if( cat_id == -1 ){
+                                    if (cat_id == -1) {
                                         break;
-                                    }else{
+                                    } else {
                                         String q361 = "SELECT p_id,p_name,p_descrip FROM Product WHERE p_stock>0 and p_cat_id=?";
                                         PreparedStatement st361 = con.prepareStatement(q361);
 
-                                        st361.setInt(1,cat_id);
+                                        st361.setInt(1, cat_id);
                                         ResultSet rs361 = st361.executeQuery();
 
                                         System.out.println("\nList of Products :\n");
-                                        while( rs361.next() ){
+                                        while (rs361.next()) {
                                             System.out.println("Product ID   ->  " + rs361.getInt(1));
                                             System.out.println("Product Name ->  " + rs361.getString(2) + "\n");
                                         }
@@ -710,6 +710,123 @@ public class Main {
                                         sc.nextLine();
                                     }
                                 }
+                            } else if (opt == 7) {
+
+                                while(true) {
+
+                                    try {
+
+                                        int product_id, quantity;
+
+                                        System.out.println("\nEnter Product ID     : ");
+                                        System.out.println("(enter -1 to go back)");
+                                        product_id = sc.nextInt();
+
+                                        System.out.println("\nEnter Quantity       : ");
+                                        quantity = sc.nextInt();
+
+                                        if (product_id == -1) {
+                                            break;
+                                        } else {
+
+                                            con.setAutoCommit(false);
+                                            String q371 = "SELECT * FROM Cart_Product_List WHERE cp_pid = ?" +
+                                                          " AND cp_cart_id = (SELECT cus_cart_id FROM Customer" +
+                                                          " WHERE cus_username = ?)";
+                                            PreparedStatement st371 = con.prepareStatement(q371);
+
+                                            st371.setInt(1, product_id);
+                                            st371.setString(2, usridc);
+
+                                            ResultSet rs371 = st371.executeQuery();
+
+                                            String q372 = "SELECT p_cost FROM Product WHERE p_id=?";
+                                            PreparedStatement st372 = con.prepareStatement(q372);
+
+                                            st372.setInt(1, product_id);
+
+                                            ResultSet rs372 = st372.executeQuery();
+
+                                            int price = 0;
+                                            if (rs372.next()) {
+                                                price = rs372.getInt(1);
+                                                price = price * quantity;
+                                            }
+                                            st372.close();
+
+                                            if (rs371.next()) {
+
+                                                String q373 = "UPDATE Cart_Product_List" +
+                                                              " SET cp_quantity = cp_quantity + ?, cp_price = cp_price +  ?" +
+                                                              " WHERE cp_pid = ? AND cp_cart_id = (SELECT cus_cart_id FROM" +
+                                                              " Customer WHERE cus_username = ?)";
+                                                PreparedStatement st373 = con.prepareStatement(q373);
+
+                                                st373.setInt(1, quantity);
+                                                st373.setInt(2, price);
+                                                st373.setInt(3, product_id);
+                                                st373.setString(4, usridc);
+
+                                                int rs373 = st373.executeUpdate();
+
+                                                if (rs373 == 1) {
+//                                                    System.out.println("updated quantity in cart");
+                                                } else {
+                                                    st373.close();
+                                                    throw new SQLException("Encountered Error while updating quantity");
+                                                }
+                                                st373.close();
+
+                                            } else {
+
+                                                String q375 = "INSERT INTO Cart_Product_List (cp_quantity, cp_cart_id," +
+                                                              " cp_price, cp_pid) VALUES ( ?, (SELECT cus_cart_id FROM" +
+                                                              " Customer WHERE cus_username = ?), ?, ?)";
+                                                PreparedStatement st375 = con.prepareStatement(q375);
+
+                                                st375.setInt(1,quantity);
+                                                st375.setString(2,usridc);
+                                                st375.setInt(3,price);
+                                                st375.setInt(4,product_id);
+
+                                                int rs375 = st375.executeUpdate();
+                                                if ( rs375==1 ){
+//                                                    System.out.println("Added New Entry in Cart_Product_List");
+                                                }else{
+                                                    st375.close();
+                                                    throw new SQLException("Encountered Error while adding new entry in Cart_Product_List");
+                                                }
+                                                st375.close();
+                                            }
+
+                                            String q374 = "UPDATE Cart" +
+                                                    " SET total_price = total_price + ?"+
+                                                    " WHERE cart_id = ( SELECT cus_Cart_id" +
+                                                    " FROM Customer WHERE cus_username = ? )";
+                                            PreparedStatement st374 = con.prepareStatement(q374);
+
+                                            st374.setInt(1,price);
+                                            st374.setString(2,usridc);
+                                            int rs374 = st374.executeUpdate();
+
+                                            if( rs374==1 ){
+//                                                System.out.println("Cart total_price set successfully");
+                                            }else{
+                                                st374.close();
+                                                throw new SQLException("Encountered Error while setting total_price of Cart");
+                                            }
+                                            st374.close();
+                                            con.commit();
+                                        }
+
+                                    } catch ( SQLException e ){
+                                        System.out.println(e.getMessage());
+                                        con.rollback();
+                                    } finally {
+                                        con.setAutoCommit(true);
+                                    }
+                                }
+
                             } else if (opt == 9) {
                                 String q39 = "DELETE FROM Customer WHERE cus_username=?";
                                 PreparedStatement st39 = con.prepareStatement(q39);
@@ -802,6 +919,7 @@ public class Main {
                                     int o_price = 0;
                                     if( rs3_10_4.next() ){
                                         o_price = rs3_10_4.getInt(1);
+//                                        System.out.println("this is o_price -> "+o_price);
                                     }
 
                                     String q3_10_19 = "SELECT sub_name FROM Subscription WHERE sub_id=(" +
@@ -818,10 +936,13 @@ public class Main {
 
                                     if(sub.equals("silver")){
                                         o_price = (int)(0.95*o_price);
+//                                        System.out.println("this is o_price -> "+o_price);
                                     }else if(sub.equals("gold")){
                                         o_price = (int)(0.90*o_price);
+//                                        System.out.println("this is o_price -> "+o_price);
                                     }else if(sub.equals("platinum")){
                                         o_price = (int)(0.85*o_price);
+//                                        System.out.println("this is o_price -> "+o_price);
                                     }
 
                                     if ( o_price > balance) {
@@ -951,7 +1072,7 @@ public class Main {
                                                    " VALUES (?,CURRENT_DATE())";
 
                                     PreparedStatement st3_10_11 = con.prepareStatement(q3_10_11);
-                                    System.out.println("this is o_price -> "+o_price);
+//                                    System.out.println("this is o_price -> "+o_price);
                                     st3_10_11.setInt(1,o_price);
 
                                     int rs3_10_11 = st3_10_11.executeUpdate();
