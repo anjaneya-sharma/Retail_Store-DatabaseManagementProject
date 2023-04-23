@@ -873,13 +873,13 @@ public class Main {
                                         System.out.println("(enter -1 to go back)");
                                         product_id = sc.nextInt();
 
-                                        System.out.println("\nEnter Quantity       : ");
-                                        quantity = sc.nextInt();
-
                                         if (product_id == -1) {
                                             break;
                                         } else {
 
+                                            System.out.println("\nEnter Quantity       : ");
+                                            quantity = sc.nextInt();
+                                            
                                             con.setAutoCommit(false);
                                             String q371 = "SELECT * FROM Cart_Product_List WHERE cp_pid = ?" +
                                                           " AND cp_cart_id = (SELECT cus_cart_id FROM Customer" +
