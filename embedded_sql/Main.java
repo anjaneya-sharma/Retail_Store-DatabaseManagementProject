@@ -651,6 +651,40 @@ public class Main {
 
                                 st31.close();
 
+                            } else if (opt == 2) { // UPDATE wallet balance
+                                int incr_bal = 0;
+                                System.out.println("Enter the amount by which you want to increase your balance:");
+                                incr_bal = sc.nextInt();
+                                sc.nextLine();
+                                String q32 = "UPDATE Customer SET cus_wallet=cus_wallet+? WHERE cus_username=?";
+                                PreparedStatement st32 = con.prepareStatement(q32);
+
+                                st32.setInt(1, incr_bal);
+                                st32.setString(2, usridc);
+
+                                int rs32 = st32.executeUpdate();
+
+                                if (rs32 == 1) {
+                                    System.out.println("Wallet balance updated successfully");
+                                } else {
+                                    System.out.println("ERROR encountered in updating the balance");
+                                }
+
+                            } else if (opt == 4) { // check current subscription
+                                String subs = "";
+                                String q34 = "SELECT * FROM Subscription WHERE sub_id=(SELECT cus_sub_id FROM Customer WHERE cus_username=?)";
+                                PreparedStatement st34 = con.prepareStatement(q34);
+
+                                st34.setString(1, usridc);
+
+                                ResultSet rs34 = st34.executeQuery();
+
+                                while (rs34.next()) {
+                                    subs = rs34.getString(2);
+                                }
+
+                                System.out.println("Your subscription is " + subs);
+
                             } else if (opt == 3) {
                                 String q33 = "SELECT P.p_id,P.p_name,P.p_cost,CP.cp_quantity,CP.cp_price FROM Product as P , Cart_Product_List as CP , Customer as C WHERE P.p_id=CP.cp_pid AND CP.cp_cart_id=C.cus_cart_id AND C.cus_username=?;";
                                 PreparedStatement st33 = con.prepareStatement(q33);
@@ -671,6 +705,123 @@ public class Main {
                                 System.out.println("\nNet Total           = " + price + "\n");
 
                                 st33.close();
+
+                            } else if (opt == 5) { // upgrade subscription
+                                String current_subs = "";
+                                int current_subs_id = 0;
+                                int wallet_bal = 0;
+
+                                String q351 = "Select * FROM Customer WHERE cus_username=?";
+                                PreparedStatement st351 = con.prepareStatement(q351);
+
+                                st351.setString(1, usridc);
+
+                                ResultSet rs351 = st351.executeQuery();
+
+                                while (rs351.next()) {
+                                    wallet_bal = rs351.getInt(13);
+                                    current_subs_id = rs351.getInt(12);
+                                }
+
+                                st351.close();
+
+
+                                String q3510 = "Select * FROM Subscription WHERE sub_id=?";
+                                PreparedStatement st3510 = con.prepareStatement(q3510);
+
+                                st3510.setInt(1, current_subs_id);
+
+                                ResultSet rs3510 = st3510.executeQuery();
+
+                                while (rs3510.next()) {
+                                    current_subs = rs3510.getString(2);
+                                }
+
+                                st3510.close();
+
+
+                                int amount_to_be_deducted = 0;
+                                String future_subscription = "";
+
+                                if (current_subs.equals("silver")) {
+                                    System.out.println("Press 1 to upgrade to gold \nPress 2 to upgrade to Platinum");
+                                    int sel = 0;
+                                    sel = sc.nextInt();
+                                    sc.nextLine();
+                                    if (sel == 1) {
+                                        future_subscription = "gold";
+                                    } else if (sel == 2) {
+                                        future_subscription = "platinum";
+                                    }
+                                } else if (current_subs.equals("gold")) {
+                                    future_subscription = "platinum";
+                                } else if (current_subs.equals("platinum")) {
+                                    System.out.println("You already have platinum subscription");
+                                }
+
+                                if (future_subscription.equals("gold")) {
+                                    if (wallet_bal > 1000) {
+                                        String q3511 = "UPDATE Subscription SET subname=? WHERE sub_id=(SELECT cus_sub_id FROM Customer WHERE cus_username=?)";
+                                        PreparedStatement st3511 = con.prepareStatement(q3511);
+                                        String strr = "gold";
+                                        st3511.setString(1, strr);
+                                        st3511.setString(2, usridc);
+
+                                        int rs3511 = st3511.executeUpdate();
+
+                                        if (rs3511 == 1) {
+                                            System.out.println("Subscription updated successfully");
+                                        } else {
+                                            System.out.println("ERROR encountered in updating subscription");
+                                        }
+
+                                        st3511.close();
+
+                                    } else {
+                                        System.out.println("You don't have enough balance");
+                                    }
+                                } else if (future_subscription.equals("platinum")) {
+                                    if (wallet_bal > 2000) {
+                                        //change subscription to platinum
+
+                                        String q3512 = "UPDATE Subscription SET sub_name=? WHERE sub_id=(SELECT cus_sub_id FROM Customer WHERE cus_username=?)";
+                                        PreparedStatement st3512 = con.prepareStatement(q3512);
+                                        String strr = "platinum";
+                                        st3512.setString(1, strr);
+                                        st3512.setString(2, usridc);
+
+                                        int rs3512 = st3512.executeUpdate();
+                                        int msg = 0;
+                                        if (rs3512 == 1) {
+                                            System.out.println("subscription upgraded successfully");
+                                        } else {
+                                            System.out.println("ERROR encountered in updating subscription");
+                                        }
+
+                                        st3512.close();
+
+                                        if (future_subscription.equals("gold")) amount_to_be_deducted = 1000;
+                                        else if (future_subscription.equals("platinum")) amount_to_be_deducted = 2000;
+
+                                        String q3513 = "UPDATE Customer SET cus_wallet=cus_wallet-? WHERE cus_username=?";
+                                        PreparedStatement st3513 = con.prepareStatement(q3513);
+
+                                        st3513.setInt(1, amount_to_be_deducted);
+                                        st3513.setString(2, usridc);
+
+                                        int rs3513 = st3513.executeUpdate();
+
+                                        if (rs3513 == 1) {
+                                            System.out.println("subscription updated successfully");
+                                        } else {
+                                            System.out.println("ERROR encountered in updating the subscription");
+                                        }
+
+
+                                    } else {
+                                        System.out.println("You don't have enough balance");
+                                    }
+                                }
 
                             } else if (opt == 6) {
 
@@ -826,6 +977,71 @@ public class Main {
                                         con.setAutoCommit(true);
                                     }
                                 }
+
+                            } else if (opt == 8) {    // remove items in cart
+                                // fetch product id , remove that entry from cpl , before that fetch price and make changes in cart
+                                int prod_id=0;
+                                int pric=0;
+                                int quantt=0;
+                                System.out.println("Enter the product id of the product that you want to remove from your cart");
+                                prod_id=sc.nextInt();
+                                sc.nextLine();
+
+                                String q380 = "Select * FROM Cart_Product_List WHERE cp_pid=?";
+                                PreparedStatement st380 = con.prepareStatement(q380);
+
+                                st380.setInt(1,prod_id );
+
+                                ResultSet rs380 = st380.executeQuery();
+
+                                while (rs380.next()) {
+                                    pric=rs380.getInt(3);
+                                    quantt=rs380.getInt(2);
+                                }
+                                st380.close();
+
+                                //price fetched , now update cart
+
+                                int cart_id=0;
+
+                                String q382 = "Select * FROM Customer WHERE cus_username=?";
+                                PreparedStatement st382 = con.prepareStatement(q382);
+
+                                st382.setString(1,usridc );
+
+                                ResultSet rs382 = st382.executeQuery();
+
+                                while (rs382.next()) {
+                                    cart_id=rs382.getInt(10);
+                                }
+                                st382.close();
+
+
+                                String q381 = "UPDATE Cart SET total_price = total_price - ?  WHERE cart_id=?";
+                                PreparedStatement st381 = con.prepareStatement(q381);
+
+                                st381.setInt(1,pric*quantt );
+                                st381.setInt(2,cart_id );
+
+                                int rs381 = st381.executeUpdate();
+                                if(rs381!=1) System.out.println("Error in updating  cart balance");
+
+                                st381.close();
+
+
+                                String q38 = "DELETE FROM Cart_Product_list WHERE cp_pid=? AND cp_cart_id=?";
+                                PreparedStatement st38 = con.prepareStatement(q38);
+
+                                st38.setInt(1,prod_id );
+                                st38.setInt(2,cart_id);
+
+                                int rs38 = st38.executeUpdate();
+                                if(rs38==1) System.out.println("Product removed from your cart successfully");
+                                else {
+                                    System.out.println("Error encountered in removing product to cart");
+                                }
+
+                                st38.close();
 
                             } else if (opt == 9) {
                                 String q39 = "DELETE FROM Customer WHERE cus_username=?";
@@ -1256,6 +1472,68 @@ public class Main {
 
                                 st4.close();
 
+                            } else if (opt == 2) { // orders to be delivered
+
+
+                                int dp_id = 0; // to be found out , since required in the second embedded query
+
+                                String q042 = "Select * FROM Delivery_Partner WHERE dp_username=?";
+                                PreparedStatement st042 = con.prepareStatement(q042);
+
+                                st042.setString(1, usriddp);
+
+                                ResultSet rs042 = st042.executeQuery();
+
+                                while (rs042.next()) {
+                                    dp_id = rs042.getInt(1);
+                                }
+
+
+                                String q42 = "Select * FROM _Order WHERE order_dp_id=? and order_delivery_status='in-transit'";
+                                PreparedStatement st42 = con.prepareStatement(q42);
+
+                                st42.setInt(1, dp_id);
+
+                                ResultSet rs42 = st42.executeQuery();
+
+
+                                while (rs42.next()) {
+
+                                    System.out.println("Order id      : " + rs42.getInt(1));
+                                    System.out.println("Customer id   : " + rs42.getInt(3));
+                                    System.out.println("Order date    : " + rs42.getTimestamp(5));
+                                    System.out.println("Firstname     : " + rs42.getString(7));
+                                    System.out.println("Lastname      : " + rs42.getString(8));
+                                    System.out.println("Mobile Number : " + rs42.getLong(9));
+                                    System.out.println("Street        : " + rs42.getString(11));
+                                    System.out.println("City          : " + rs42.getString(12));
+                                    System.out.println("Pin Code      : " + rs42.getString(13));
+                                    System.out.println(" ");
+
+
+                                }
+
+                            } else if (opt == 3) {
+                                int oid = 0;
+
+                                System.out.println("Enter the order_id whose status you want to update "); //
+                                oid = sc.nextInt();
+                                sc.nextLine();
+
+                                String q43 = "UPDATE _Order SET order_delivery_status='delivered' WHERE order_id = ? ";
+
+                                PreparedStatement st43 = con.prepareStatement(q43);
+
+                                st43.setInt(1, oid);
+
+                                int rs43 = st43.executeUpdate();
+
+                                if (rs43 == 1) {
+                                    System.out.println("Delivery updated successfully !!");
+                                } else {
+                                    System.out.println("ERROR Encountered while updating delivery");
+                                }
+
                             } else if (opt == 4) {
                                 break;
                             } else {
@@ -1263,7 +1541,6 @@ public class Main {
                             }
                         }
                     }
-
 
                 } else if (op == 5) {
 

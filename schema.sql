@@ -109,11 +109,11 @@ CREATE TABLE _Order (
 	order_id INT NOT NULL UNIQUE AUTO_INCREMENT,
     order_delivery_status VARCHAR(255) NOT NULL ,
     order_dp_id INT NOT NULL ,
-    order_date  DATE NOT NULL ,
+    order_date DATE NOT NULL ,
     order_ship_date DATE  NOT NULL ,
     order_cus_id INT NOT NULL,
     
-     order_cus_firstname VARCHAR(255) NOT NULL,
+	 order_cus_firstname VARCHAR(255) NOT NULL,
 	 order_cus_lastname VARCHAR(255) NOT NULL,
 	 order_cus_mobile BIGINT NOT NULL,
 	 order_cus_email VARCHAR(255) NOT NULL,
@@ -157,18 +157,6 @@ CREATE TABLE Cust_History(
     delet_date timestamp default now()
 ); 
  
--- EXTRAS
-
-CREATE TABLE Manages(
-	m_admin_id INT NOT NULL,
-    m_p_id INT NOT NULL 
-);
-
-CREATE TABLE is_added_to(
-	iat_cart_id INT NOT NULL,
-    iat_p_id INT NOT NULL
-);
-
 -- debug
 
 drop table Admin, _Order,Payment, Places, Pays, Cart_Product_List, Cart, Category, Seller, Delivery_Partner, Product, Subscription, Customer, cust_history;
@@ -230,3 +218,15 @@ ALTER TABLE Cart_Product_List AUTO_INCREMENT=1001;
 
 ALTER TABLE Customer AUTO_INCREMENT=301;
 ALTER TABLE Cust_History AUTO_INCREMENT=5;
+
+-- RELICS
+
+CREATE TABLE Manages(
+	m_admin_id INT NOT NULL,
+    m_p_id INT NOT NULL 
+);
+
+CREATE TABLE is_added_to(
+	iat_cart_id INT NOT NULL,
+    iat_p_id INT NOT NULL
+);
