@@ -714,7 +714,7 @@ public class Main {
 
                                 int cart_id=0;
 
-                                String q382 = "Select * FROM Customer WHERE cus_username=?";
+                                String q382 = "Select cus_cart_id FROM Customer WHERE cus_username=?";
                                 PreparedStatement st382 = con.prepareStatement(q382);
 
                                 st382.setString(1,usridc );
@@ -722,15 +722,15 @@ public class Main {
                                 ResultSet rs382 = st382.executeQuery();
 
                                 while (rs382.next()) {
-                                    cart_id=rs382.getInt(10);
+                                    cart_id=rs382.getInt(1);
                                 }
                                 st382.close();
 
 
-                                String q381 = "UPDATE Cart SET total_price= total_price - WHERE cart_id=?";
+                                String q381 = "UPDATE Cart SET total_price= total_price - ? WHERE cart_id=?";
                                 PreparedStatement st381 = con.prepareStatement(q381);
 
-                                st381.setInt(1,pric*quantt );
+                                st381.setInt(1,pric );
                                 st381.setInt(2,cart_id );
 
                                 int rs381 = st381.executeUpdate();
